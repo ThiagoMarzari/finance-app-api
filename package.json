@@ -6,15 +6,20 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "postinstall": "npx husky"
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "postinstall": "npx husky",
+    "start": "node --loader ts-node/esm src/index.ts",
+    "dev": "node --watch --loader ts-node/esm src/index.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@eslint/js": "^9.34.0",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.3.0",
+    "@types/pg": "^8.15.5",
     "eslint": "^9.34.0",
     "git-commit-msg-linter": "^5.0.8",
     "globals": "^16.3.0",
@@ -23,5 +28,10 @@
     "lint-staged": "^16.1.5",
     "prettier": "^3.6.2",
     "typescript-eslint": "^8.41.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "pg": "^8.16.3"
   }
 }
