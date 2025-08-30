@@ -4,6 +4,7 @@ export const env = {
   PG_PASSWORD: process.env.PG_PASSWORD || '',
   PG_PORT: parseInt(process.env.PG_PORT || '5432'),
   PG_DB: process.env.PG_DB || 'finance_app',
+  PG_HOST: process.env.PG_HOST || 'localhost',
 
   // Configurações da aplicação
   PORT: parseInt(process.env.PORT || '3000'),
@@ -11,7 +12,7 @@ export const env = {
 
   // Validação das variáveis obrigatórias
   validate() {
-    const required = ['PG_USER', 'PG_PASSWORD', 'PG_DB']
+    const required = ['PG_USER', 'PG_PASSWORD', 'PG_DB', 'PG_HOST']
     const missing = required.filter((key) => !process.env[key])
 
     if (missing.length > 0) {

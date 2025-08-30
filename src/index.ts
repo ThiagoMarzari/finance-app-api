@@ -1,16 +1,14 @@
 import 'dotenv/config'
 import express from 'express'
-import { pool } from './db/postgres/client.js'
+import { postgresClient } from './db/postgres/helper.js'
 import { env } from './config/env.js'
 
 const app = express()
 
 app.get('/', async (req, res) => {
-  const client = await pool.connect()
+  const results = await postgresClient.query('SELECT * FROM users')
 
-  const result = await client.query('SELECT * FROM users')
-
-  res.send(result)
+  res.send(results)
 })
 
 app.listen(env.PORT, () => {

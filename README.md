@@ -43,15 +43,19 @@ npm install
 
 ## Execução
 
-```bash
+````bash
+# Execução normal
 npm start
-```
+
+# Desenvolvimento com watch (sem avisos)
+npm run dev
+
 
 ## Desenvolvimento
 
 ```bash
 npm run dev
-```
+````
 
 ## Linting
 
@@ -59,3 +63,15 @@ npm run dev
 npm run lint
 npm run lint:fix
 ```
+
+## Solução de Problemas
+
+### Avisos do Node.js
+
+Se você ainda ver avisos experimentais ou de deprecação, use:
+
+```bash
+npm run dev:clean
+```
+
+Este comando usa `NODE_OPTIONS` para suprimir todos os avisos desnecessários.
