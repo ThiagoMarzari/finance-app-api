@@ -1,6 +1,6 @@
 export const env = {
   // Configurações do PostgreSQL
-  PG_USER: process.env.PG_USER || 'postgres',
+  PG_USER: process.env.PG_USER || '',
   PG_PASSWORD: process.env.PG_PASSWORD || '',
   PG_PORT: parseInt(process.env.PG_PORT || '5432'),
   PG_DB: process.env.PG_DB || 'finance_app',
