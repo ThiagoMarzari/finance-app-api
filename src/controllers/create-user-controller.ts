@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { CreateUserService } from '../services/create-user-service.ts'
+import { badRequest, created, internalServerError } from './helper.ts'
 
 export class CreateUserController {
   async execute(req: Request, res: Response) {
@@ -14,25 +15,30 @@ export class CreateUserController {
         !email.trim() ||
         !password.trim()
       ) {
-        return res.status(400).json({
-          message:
-            'All fields are required: first_name, last_name, email, password',
-        })
+        return badRequest(
+          res,
+          'All fields are required: first_name, last_name, email, password',
+        )
       }
 
       // Validar tamanho da senha (mínimo 8 caracteres)
       if (password.length < 8) {
-        return res.status(400).json({
-          message: 'password must be at least 8 characters long',
-        })
+        return badRequest(res, 'password must be at least 8 characters long')
+      }
+
+      //Verifique se o email é valido
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!emailRegex.test(email)) {
+        return badRequest(res, 'Invalid email format')
       }
 
       // Validar se a senha contém pelo menos uma letra e um número
       const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)/
       if (!passwordRegex.test(password)) {
-        return res.status(400).json({
-          message: 'password must contain at least one letter and one number',
-        })
+        return badRequest(
+          res,
+          'password must contain at least one letter and one number',
+        )
       }
 
       //Instanciar o serviço e chama-lo
@@ -44,12 +50,10 @@ export class CreateUserController {
         password,
       })
       //retornar a resposta (status code)
-      return res.status(201).json(createdUser)
+      return created(res, createdUser)
     } catch (error) {
       console.error('Error creating user:', error)
-      return res.status(500).json({
-        message: 'Internal Server Error',
-      })
+      return internalServerError(res)
     }
   }
 }
