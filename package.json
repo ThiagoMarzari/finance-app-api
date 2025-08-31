@@ -9,8 +9,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "postinstall": "npx husky",
-    "start": "node --no-warnings --loader ts-node/esm src/index.ts",
-    "dev": "node --no-warnings --watch --loader ts-node/esm src/index.ts",
+    "start": "node --no-warnings --loader ts-node/esm src/server.ts",
+    "dev": "node --no-warnings --watch --loader ts-node/esm src/server.ts",
     "db:migrate": "node --no-warnings --loader ts-node/esm src/db/migrations/migrate.ts"
   },
   "keywords": [],
