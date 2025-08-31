@@ -7,7 +7,7 @@ export const env = {
   PG_HOST: process.env.PG_HOST || 'localhost',
 
   // Configurações da aplicação
-  PORT: parseInt(process.env.PORT || '3000'),
+  PORT: parseInt(process.env.PORT || '8080'),
   NODE_ENV: process.env.NODE_ENV || 'development',
 
   // Validação das variáveis obrigatórias
