@@ -3,6 +3,7 @@ import { badRequest } from '../helper.ts'
 import { CreateUserService } from '../../services/user/create-user-service.ts'
 import { created, internalServerError } from '../helper.ts'
 import { isEmail } from '../../utils/validator.ts'
+import { EmailAlreadyExists } from '../../errors/user.ts'
 
 export class CreateUserController {
   async execute(req: Request, res: Response) {
@@ -47,6 +48,9 @@ export class CreateUserController {
       })
       return created(res, createdUser)
     } catch (error) {
+      if (error instanceof EmailAlreadyExists) {
+        return badRequest(res, error.message)
+      }
       console.error('Error creating user:', error)
       return internalServerError(res)
     }
