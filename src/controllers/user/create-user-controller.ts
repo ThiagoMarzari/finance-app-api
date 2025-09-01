@@ -1,6 +1,8 @@
 import { Request, Response } from 'express'
+import { badRequest } from '../helper.ts'
 import { CreateUserService } from '../../services/user/create-user-service.ts'
-import { badRequest, created, internalServerError } from '../helper.ts'
+import { created, internalServerError } from '../helper.ts'
+import { isEmail } from '../../utils/validator.ts'
 
 export class CreateUserController {
   async execute(req: Request, res: Response) {
@@ -26,9 +28,7 @@ export class CreateUserController {
         return badRequest(res, 'password must be at least 8 characters long')
       }
 
-      //Verifique se o email é valido
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-      if (!emailRegex.test(email)) {
+      if (!isEmail(email)) {
         return badRequest(res, 'Invalid email format')
       }
 

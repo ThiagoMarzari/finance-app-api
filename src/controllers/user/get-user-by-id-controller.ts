@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { badRequest, internalServerError, ok } from '../helper.ts'
 import { GetUserByIdService } from '../../services/user/get-user-by-id-service.ts'
+import { isUUID } from '../../utils/validator.ts'
 
 export class GetUserByIdController {
   async execute(req: Request, res: Response) {
@@ -11,9 +12,7 @@ export class GetUserByIdController {
       }
 
       // Validar se o ID é um UUID válido
-      const uuidRegex =
-        /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-      if (!uuidRegex.test(id)) {
+      if (!isUUID(id)) {
         return badRequest(res, 'Invalid UUID format')
       }
 
