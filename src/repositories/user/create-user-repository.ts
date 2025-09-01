@@ -1,4 +1,4 @@
-import { postgresClient } from '../db/postgres/helper.ts'
+import { postgresClient } from '../../db/postgres/helper.ts'
 
 interface createUserProps {
   id: string
