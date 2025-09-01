@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { badRequest, internalServerError, ok } from '../helper.ts'
+import { badRequest, internalServerError, notFound, ok } from '../helper.ts'
 import { GetUserByIdService } from '../../services/user/get-user-by-id-service.ts'
 import { isUUID } from '../../utils/validator.ts'
 
@@ -19,7 +19,7 @@ export class GetUserByIdController {
       const getUserByIdService = new GetUserByIdService()
       const user = await getUserByIdService.execute(id)
       if (!user) {
-        return badRequest(res, 'User not found')
+        return notFound(res, 'User not found')
       }
 
       return ok(res, user)

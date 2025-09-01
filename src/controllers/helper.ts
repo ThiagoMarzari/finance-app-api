@@ -48,3 +48,14 @@ export const internalServerError = (
 ) => {
   return res.status(status.code).json({ message })
 }
+
+export const notFound = (
+  res: Response,
+  message = 'Not Found',
+  status: status = {
+    code: 404,
+    message: 'Not Found',
+  },
+) => {
+  return res.status(status.code).json({ message })
+}
