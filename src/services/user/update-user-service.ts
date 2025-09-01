@@ -14,11 +14,11 @@ export class UpdateUserService {
   async execute(userId: string, updateUser: updateUserProps) {
     if (updateUser.email) {
       const getUserByEmailRepository = new GetUserByEmailRepository()
-      const existsUserEmail = await getUserByEmailRepository.execute(
+      const existsUser = await getUserByEmailRepository.execute(
         updateUser.email,
       )
-      if (existsUserEmail) {
-        throw new EmailAlreadyExists()
+      if (existsUser && existsUser.id !== userId) {
+        throw new EmailAlreadyExists(existsUser.email)
       }
     }
     const user = {
