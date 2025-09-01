@@ -1,6 +1,6 @@
 import crypto from 'crypto'
 import bcrypt from 'bcryptjs'
-import { CreateUserRepository } from '../repositories/user/create-user-repository.ts'
+import { CreateUserRepository } from '../../repositories/user/create-user-repository.ts'
 
 interface createUserProps {
   firstName: string
