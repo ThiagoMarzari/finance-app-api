@@ -1,14 +1,11 @@
 import 'dotenv/config'
 import express from 'express'
+import { router } from './routes.ts'
 import { env } from './config/env.ts'
-import { CreateUserController } from './controllers/user/create-user-controller.ts'
-import { GetUserByIdController } from './controllers/user/get-user-by-id-controller.ts'
 
 const app = express()
 app.use(express.json())
-
-app.post('/api/users', new CreateUserController().execute)
-app.get('/api/users/:id', new GetUserByIdController().execute)
+app.use(router)
 
 app.listen(env.PORT, () => {
   console.log(`Server is running on port ${env.PORT}`)
