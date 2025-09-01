@@ -5,17 +5,46 @@ export const badRequest = (res: Response, message: string) => {
   return res.status(400).json({ message })
 }
 
-export const ok = (res: Response, data: unknown) => {
-  return res.status(200).json(data)
+type status = {
+  code: number
+  message: string
 }
 
-export const created = (res: Response, data: unknown) => {
-  return res.status(201).json(data)
+export const ok = (
+  res: Response,
+  data: unknown,
+  status: status = {
+    code: 200,
+    message: 'OK',
+  },
+) => {
+  return res.status(status.code).json({
+    message: status.message,
+    data,
+  })
+}
+
+export const created = (
+  res: Response,
+  data: unknown,
+  status: status = {
+    code: 201,
+    message: 'Created',
+  },
+) => {
+  return res.status(status.code).json({
+    message: status.message,
+    data,
+  })
 }
 
 export const internalServerError = (
   res: Response,
   message = 'Internal Server Error',
+  status: status = {
+    code: 500,
+    message: 'Internal Server Error',
+  },
 ) => {
-  return res.status(500).json({ message })
+  return res.status(status.code).json({ message })
 }

@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
-
-import { badRequest, created, internalServerError } from './helper.ts'
-import { CreateUserService } from '../services/user/create-user-service.ts'
+import { CreateUserService } from '../../services/user/create-user-service.ts'
+import { badRequest, created, internalServerError } from '../helper.ts'
 
 export class CreateUserController {
   async execute(req: Request, res: Response) {
