@@ -1,13 +1,12 @@
 import { Request, Response } from 'express'
-import { badRequest } from '../helper.ts'
 import { CreateUserService } from '../../services/user/create-user-service.ts'
-import { created, internalServerError } from '../helper.ts'
+import { isEmail, isValidPassword } from '../../utils/validator.ts'
+import { EmailAlreadyExists } from '../../errors/user.ts'
+import { badRequest, created, internalServerError } from '../helpers/http.ts'
 import {
-  EmailAlreadyExists,
-  EmailInvalid,
-  PasswordInvalid,
-  PasswordLengthInvalid,
-} from '../../errors/user.ts'
+  invalidEmailResponse,
+  invalidPasswordResponse,
+} from '../helpers/user-helper.ts'
 
 export class CreateUserController {
   async execute(req: Request, res: Response) {
@@ -26,6 +25,14 @@ export class CreateUserController {
         )
       }
 
+      if (!isEmail(email)) {
+        return invalidEmailResponse(res)
+      }
+
+      if (!isValidPassword(password)) {
+        return invalidPasswordResponse(res)
+      }
+
       const createUserService = new CreateUserService()
       const createdUser = await createUserService.execute({
         firstName: first_name,
@@ -36,15 +43,6 @@ export class CreateUserController {
       return created(res, createdUser)
     } catch (error) {
       if (error instanceof EmailAlreadyExists) {
-        return badRequest(res, error.message)
-      }
-      if (error instanceof PasswordInvalid) {
-        return badRequest(res, error.message)
-      }
-      if (error instanceof EmailInvalid) {
-        return badRequest(res, error.message)
-      }
-      if (error instanceof PasswordLengthInvalid) {
         return badRequest(res, error.message)
       }
       console.error('Error creating user:', error)

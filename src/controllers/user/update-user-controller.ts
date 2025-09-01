@@ -1,10 +1,14 @@
 import { UpdateUserService } from '../../services/user/update-user-service.ts'
-import { ok } from '../helper.ts'
 import { EmailAlreadyExists } from '../../errors/user.ts'
-import { badRequest } from '../helper.ts'
-import { internalServerError } from '../helper.ts'
 import { Request, Response } from 'express'
 import { isEmail, isUUID, isValidPassword } from '../../utils/validator.ts'
+import { ok } from 'assert'
+import { badRequest, internalServerError } from '../helpers/http.ts'
+import {
+  invalidEmailResponse,
+  invalidIdResponse,
+  invalidPasswordResponse,
+} from '../helpers/user-helper.ts'
 
 export class UpdateUserController {
   async execute(req: Request, res: Response) {
@@ -12,8 +16,8 @@ export class UpdateUserController {
       const { first_name, last_name, email, password } = req.body
       const { id } = req.params
 
-      if (!isUUID(id)) {
-        return badRequest(res, 'User ID is invalid')
+      if (!id || !isUUID(id)) {
+        return invalidIdResponse(res)
       }
 
       if (!first_name && !last_name && !email && !password) {
@@ -21,11 +25,11 @@ export class UpdateUserController {
       }
 
       if (email && !isEmail(email)) {
-        return badRequest(res, 'Email is invalid')
+        return invalidEmailResponse(res)
       }
 
       if (password && !isValidPassword(password)) {
-        return badRequest(res, 'Password is invalid')
+        return invalidPasswordResponse(res)
       }
 
       const updateUserService = new UpdateUserService()

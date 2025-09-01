@@ -1,19 +1,16 @@
 import { Request, Response } from 'express'
-import { badRequest, internalServerError, notFound, ok } from '../helper.ts'
 import { GetUserByIdService } from '../../services/user/get-user-by-id-service.ts'
 import { isUUID } from '../../utils/validator.ts'
+import { ok } from 'assert'
+import { notFound, internalServerError } from '../helpers/http.ts'
+import { invalidIdResponse } from '../helpers/user-helper.ts'
 
 export class GetUserByIdController {
   async execute(req: Request, res: Response) {
     try {
       const { id } = req.params
-      if (!id) {
-        return badRequest(res, 'id is required')
-      }
-
-      // Validar se o ID é um UUID válido
-      if (!isUUID(id)) {
-        return badRequest(res, 'Invalid UUID format')
+      if (!id || isUUID(id)) {
+        return invalidIdResponse(res)
       }
 
       const getUserByIdService = new GetUserByIdService()
