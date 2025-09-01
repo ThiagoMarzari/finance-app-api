@@ -1,6 +1,7 @@
 import crypto from 'crypto'
 import bcrypt from 'bcryptjs'
 import { CreateUserRepository } from '../../repositories/user/create-user-repository.ts'
+import { GetUserByEmailRepository } from '../../repositories/user/get-user-by-email.ts'
 
 interface createUserProps {
   firstName: string
@@ -11,7 +12,13 @@ interface createUserProps {
 
 export class CreateUserService {
   async execute({ firstName, lastName, email, password }: createUserProps) {
-    // TODO: Verificar se o usuário já existe
+    const getUserByEmailRepository = new GetUserByEmailRepository()
+    const existsUser = await getUserByEmailRepository.execute(email)
+
+    if (existsUser) {
+      throw new Error('User already exists')
+    }
+
     //Gerar id do usuario
     const userId = crypto.randomUUID()
     //Criptografar a senha
