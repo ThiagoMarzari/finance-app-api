@@ -9,6 +9,9 @@ import {
 } from '../helpers/index.ts'
 
 export class GetUserByIdController {
+  constructor(private getUserByidService: GetUserByIdService) {
+    this.getUserByidService = getUserByidService
+  }
   async execute(req: Request, res: Response) {
     try {
       const { id } = req.params
@@ -16,8 +19,7 @@ export class GetUserByIdController {
         return badRequest(res, 'Invalid UUID format')
       }
 
-      const getUserByIdService = new GetUserByIdService()
-      const user = await getUserByIdService.execute(id)
+      const user = await this.getUserByidService.execute(id)
       if (!user) {
         return notFound(res, 'User not found')
       }
