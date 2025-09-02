@@ -16,7 +16,7 @@ export class UpdateUserController {
       const { first_name, last_name, email, password } = req.body
       const { id } = req.params
 
-      if (!id || !isUUID(id)) {
+      if (!isUUID(id)) {
         return invalidIdResponse(res)
       }
 
