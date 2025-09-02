@@ -5,9 +5,14 @@ import {
   GetUserByIdController,
   UpdateUserController,
 } from './controllers/index.ts'
-import { CreateUserService, GetUserByIdService } from './services/index.ts'
+import {
+  CreateUserService,
+  DeleteUserService,
+  GetUserByIdService,
+} from './services/index.ts'
 import {
   CreateUserRepository,
+  DeleteUserRepository,
   GetUserByIdRepository,
 } from './repositories/index.ts'
 
@@ -29,4 +34,10 @@ router.get('/api/users/:id', async (req: Request, res: Response) => {
   await getUserByIdController.execute(req, res)
 })
 router.patch('/api/users/:id', new UpdateUserController().execute)
-router.delete('/api/users/:id', new DeleteUserController().execute)
+router.delete('/api/users/:id', async (req: Request, res: Response) => {
+  const deleteUserRepository = new DeleteUserRepository()
+  const deleteUserService = new DeleteUserService(deleteUserRepository)
+  const deleteUserController = new DeleteUserController(deleteUserService)
+
+  await deleteUserController.execute(req, res)
+})

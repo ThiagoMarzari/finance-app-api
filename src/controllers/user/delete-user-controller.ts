@@ -9,6 +9,9 @@ import {
 } from '../helpers/index.ts'
 
 export class DeleteUserController {
+  constructor(private deleteUserService: DeleteUserService) {
+    this.deleteUserService = deleteUserService
+  }
   async execute(req: Request, res: Response) {
     try {
       const { id } = req.params
@@ -16,8 +19,7 @@ export class DeleteUserController {
         return badRequest(res, 'Invalid UUID format')
       }
 
-      const deleteUserService = new DeleteUserService()
-      const deletedUser = await deleteUserService.execute(id)
+      const deletedUser = await this.deleteUserService.execute(id)
       if (!deletedUser) {
         return notFound(res, 'User not found')
       }
