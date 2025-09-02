@@ -3,12 +3,13 @@ import { EmailAlreadyExists } from '../../errors/user.ts'
 import { Request, Response } from 'express'
 import { isEmail, isUUID, isValidPassword } from '../../utils/validator.ts'
 import { ok } from 'assert'
-import { badRequest, internalServerError } from '../helpers/http.ts'
 import {
-  invalidEmailResponse,
   invalidIdResponse,
+  invalidEmailResponse,
+  badRequest,
+  internalServerError,
   invalidPasswordResponse,
-} from '../helpers/user-helper.ts'
+} from '../helpers/index.ts'
 
 export class UpdateUserController {
   async execute(req: Request, res: Response) {

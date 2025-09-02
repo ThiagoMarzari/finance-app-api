@@ -2,12 +2,13 @@ import { Request, Response } from 'express'
 import { CreateUserService } from '../../services/user/create-user-service.ts'
 import { isEmail, isValidPassword } from '../../utils/validator.ts'
 import { EmailAlreadyExists } from '../../errors/user.ts'
-import { badRequest, created, internalServerError } from '../helpers/http.ts'
 import {
+  badRequest,
+  created,
+  internalServerError,
   invalidEmailResponse,
   invalidPasswordResponse,
-} from '../helpers/user-helper.ts'
-
+} from '../helpers/index.ts'
 export class CreateUserController {
   async execute(req: Request, res: Response) {
     try {

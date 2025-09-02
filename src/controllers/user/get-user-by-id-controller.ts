@@ -2,14 +2,17 @@ import { Request, Response } from 'express'
 import { GetUserByIdService } from '../../services/user/get-user-by-id-service.ts'
 import { isUUID } from '../../utils/validator.ts'
 import { ok } from 'assert'
-import { notFound, internalServerError } from '../helpers/http.ts'
-import { invalidIdResponse } from '../helpers/user-helper.ts'
+import {
+  notFound,
+  internalServerError,
+  invalidIdResponse,
+} from '../helpers/index.ts'
 
 export class GetUserByIdController {
   async execute(req: Request, res: Response) {
     try {
       const { id } = req.params
-      if (!id || isUUID(id)) {
+      if (!isUUID(id)) {
         return invalidIdResponse(res)
       }
 

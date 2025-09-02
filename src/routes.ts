@@ -1,7 +1,9 @@
 import { Router } from 'express'
-import { CreateUserController } from './controllers/user/create-user-controller.ts'
-import { GetUserByIdController } from './controllers/user/get-user-by-id-controller.ts'
-import { UpdateUserController } from './controllers/user/update-user-controller.ts'
+import {
+  CreateUserController,
+  GetUserByIdController,
+  UpdateUserController,
+} from './controllers/user/index.ts'
 
 export const router = Router()
 
