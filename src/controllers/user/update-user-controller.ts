@@ -2,13 +2,13 @@ import { UpdateUserService } from '../../services/user/update-user-service.ts'
 import { EmailAlreadyExists } from '../../errors/user.ts'
 import { Request, Response } from 'express'
 import { isEmail, isUUID, isValidPassword } from '../../utils/validator.ts'
-import { ok } from 'assert'
 import {
   invalidIdResponse,
   invalidEmailResponse,
   badRequest,
   internalServerError,
   invalidPasswordResponse,
+  ok,
 } from '../helpers/index.ts'
 
 export class UpdateUserController {

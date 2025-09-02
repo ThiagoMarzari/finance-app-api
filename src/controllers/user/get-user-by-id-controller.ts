@@ -1,11 +1,11 @@
 import { Request, Response } from 'express'
 import { GetUserByIdService } from '../../services/user/get-user-by-id-service.ts'
 import { isUUID } from '../../utils/validator.ts'
-import { ok } from 'assert'
 import {
-  notFound,
+  badRequest,
   internalServerError,
-  invalidIdResponse,
+  notFound,
+  ok,
 } from '../helpers/index.ts'
 
 export class GetUserByIdController {
@@ -13,7 +13,7 @@ export class GetUserByIdController {
     try {
       const { id } = req.params
       if (!isUUID(id)) {
-        return invalidIdResponse(res)
+        return badRequest(res, 'Invalid UUID format')
       }
 
       const getUserByIdService = new GetUserByIdService()
