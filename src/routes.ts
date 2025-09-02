@@ -3,7 +3,7 @@ import {
   CreateUserController,
   GetUserByIdController,
   UpdateUserController,
-} from './controllers/user/index.ts'
+} from './controllers/index.ts'
 
 export const router = Router()
 

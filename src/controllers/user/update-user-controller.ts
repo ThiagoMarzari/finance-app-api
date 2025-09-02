@@ -1,4 +1,4 @@
-import { UpdateUserService } from '../../services/user/update-user-service.ts'
+import { UpdateUserService } from '../../services/index.ts'
 import { EmailAlreadyExists } from '../../errors/user.ts'
 import { Request, Response } from 'express'
 import { isEmail, isUUID, isValidPassword } from '../../utils/validator.ts'

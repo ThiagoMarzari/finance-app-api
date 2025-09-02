@@ -1,4 +1,4 @@
-import { GetUserByIdRepository } from '../../repositories/user/get-user-by-id-repository.ts'
+import { GetUserByIdRepository } from '../../repositories/index.ts'
 
 export class GetUserByIdService {
   async execute(id: string) {

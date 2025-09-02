@@ -1,7 +1,9 @@
 import bcrypt from 'bcryptjs'
 import { EmailAlreadyExists } from '../../errors/user.ts'
-import { GetUserByEmailRepository } from '../../repositories/user/get-user-by-email.ts'
-import { UpdateUserRepository } from '../../repositories/user/update-user-repository.ts'
+import {
+  GetUserByEmailRepository,
+  UpdateUserRepository,
+} from '../../repositories/index.ts'
 
 interface updateUserProps {
   firstName?: string

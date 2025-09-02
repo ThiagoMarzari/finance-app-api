@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { CreateUserService } from '../../services/user/create-user-service.ts'
+import { CreateUserService } from '../../services/index.ts'
 import { isEmail, isValidPassword } from '../../utils/validator.ts'
 import { EmailAlreadyExists } from '../../errors/user.ts'
 import {

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { GetUserByIdService } from '../../services/user/get-user-by-id-service.ts'
+import { GetUserByIdService } from '../../services/index.ts'
 import { isUUID } from '../../utils/validator.ts'
 import {
   badRequest,

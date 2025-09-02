@@ -1,7 +1,9 @@
 import crypto from 'crypto'
 import bcrypt from 'bcryptjs'
-import { CreateUserRepository } from '../../repositories/user/create-user-repository.ts'
-import { GetUserByEmailRepository } from '../../repositories/user/get-user-by-email.ts'
+import {
+  CreateUserRepository,
+  GetUserByEmailRepository,
+} from '../../repositories/index.ts'
 import { EmailAlreadyExists } from '../../errors/user.ts'
 
 interface createUserProps {
