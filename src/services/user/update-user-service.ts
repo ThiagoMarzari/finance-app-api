@@ -13,10 +13,16 @@ interface updateUserProps {
 }
 
 export class UpdateUserService {
+  constructor(
+    private updateUserRepository: UpdateUserRepository,
+    private getUserByEmailRepository: GetUserByEmailRepository,
+  ) {
+    this.updateUserRepository = updateUserRepository
+    this.getUserByEmailRepository = getUserByEmailRepository
+  }
   async execute(userId: string, updateUser: updateUserProps) {
     if (updateUser.email) {
-      const getUserByEmailRepository = new GetUserByEmailRepository()
-      const existsUser = await getUserByEmailRepository.execute(
+      const existsUser = await this.getUserByEmailRepository.execute(
         updateUser.email,
       )
       if (existsUser && existsUser.id !== userId) {
@@ -33,8 +39,7 @@ export class UpdateUserService {
       user.password = hashedPassword
     }
 
-    const updateUserRepository = new UpdateUserRepository()
-    const updatedUser = await updateUserRepository.execute(userId, user)
+    const updatedUser = await this.updateUserRepository.execute(userId, user)
     return updatedUser
   }
 }

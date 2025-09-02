@@ -12,6 +12,9 @@ import {
 } from '../helpers/index.ts'
 
 export class UpdateUserController {
+  constructor(private updateUserService: UpdateUserService) {
+    this.updateUserService = updateUserService
+  }
   async execute(req: Request, res: Response) {
     try {
       const { first_name, last_name, email, password } = req.body
@@ -33,8 +36,7 @@ export class UpdateUserController {
         return invalidPasswordResponse(res)
       }
 
-      const updateUserService = new UpdateUserService()
-      const updatedUser = await updateUserService.execute(id, {
+      const updatedUser = await this.updateUserService.execute(id, {
         firstName: first_name,
         lastName: last_name,
         email,
