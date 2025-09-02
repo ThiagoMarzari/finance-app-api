@@ -5,13 +5,22 @@ import {
   GetUserByIdController,
   UpdateUserController,
 } from './controllers/index.ts'
-import { GetUserByIdService } from './services/index.ts'
-import { GetUserByIdRepository } from './repositories/index.ts'
+import { CreateUserService, GetUserByIdService } from './services/index.ts'
+import {
+  CreateUserRepository,
+  GetUserByIdRepository,
+} from './repositories/index.ts'
 
 export const router = Router()
 
 //-- ROTAS USER --//
-router.post('/api/users', new CreateUserController().execute)
+router.post('/api/users', async (req: Request, res: Response) => {
+  const createUserRepository = new CreateUserRepository()
+  const createUserService = new CreateUserService(createUserRepository)
+  const createUserController = new CreateUserController(createUserService)
+
+  await createUserController.execute(req, res)
+})
 router.get('/api/users/:id', async (req: Request, res: Response) => {
   const getUserByIdRepository = new GetUserByIdRepository()
   const getUserByidService = new GetUserByIdService(getUserByIdRepository)

@@ -14,6 +14,9 @@ interface createUserProps {
 }
 
 export class CreateUserService {
+  constructor(private createUserRepository: CreateUserRepository) {
+    this.createUserRepository = createUserRepository
+  }
   async execute({ firstName, lastName, email, password }: createUserProps) {
     const getUserByEmailRepository = new GetUserByEmailRepository()
     const existsUserEmail = await getUserByEmailRepository.execute(email)
@@ -33,9 +36,8 @@ export class CreateUserService {
       email: email.trim(),
     }
 
-    const userRepository = new CreateUserRepository()
     //inserir usuario no banco de dados
-    const createdUser = await userRepository.execute(user)
+    const createdUser = await this.createUserRepository.execute(user)
 
     return createdUser
   }

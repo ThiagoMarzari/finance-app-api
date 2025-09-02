@@ -10,6 +10,9 @@ import {
   invalidPasswordResponse,
 } from '../helpers/index.ts'
 export class CreateUserController {
+  constructor(private createUserService: CreateUserService) {
+    this.createUserService = createUserService
+  }
   async execute(req: Request, res: Response) {
     try {
       const { first_name, last_name, email, password } = req.body
@@ -34,8 +37,7 @@ export class CreateUserController {
         return invalidPasswordResponse(res)
       }
 
-      const createUserService = new CreateUserService()
-      const createdUser = await createUserService.execute({
+      const createdUser = await this.createUserService.execute({
         firstName: first_name,
         lastName: last_name,
         email,
