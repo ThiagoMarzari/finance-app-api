@@ -1,6 +1,19 @@
-import { GetUserByIdController } from '../../controllers/index.ts'
-import { GetUserByIdRepository } from '../../repositories/index.ts'
-import { GetUserByIdService } from '../../services/index.ts'
+import {
+  CreateUserController,
+  GetUserByIdController,
+  UpdateUserController,
+} from '../../controllers/index.ts'
+import {
+  CreateUserRepository,
+  GetUserByEmailRepository,
+  GetUserByIdRepository,
+  UpdateUserRepository,
+} from '../../repositories/index.ts'
+import {
+  CreateUserService,
+  GetUserByIdService,
+  UpdateUserService,
+} from '../../services/index.ts'
 
 export const makeGetUserByIdController = () => {
   const getUserByIdRepository = new GetUserByIdRepository()
@@ -8,4 +21,24 @@ export const makeGetUserByIdController = () => {
   const getUserByIdController = new GetUserByIdController(getUserByidService)
 
   return getUserByIdController
+}
+
+export const makeCreateUserController = () => {
+  const createUserRepository = new CreateUserRepository()
+  const createUserService = new CreateUserService(createUserRepository)
+  const createUserController = new CreateUserController(createUserService)
+
+  return createUserController
+}
+
+export const makeUpdateUserController = () => {
+  const updateUserRepository = new UpdateUserRepository()
+  const getUserByEmailRepository = new GetUserByEmailRepository()
+  const updateUserService = new UpdateUserService(
+    updateUserRepository,
+    getUserByEmailRepository,
+  )
+  const updateUserController = new UpdateUserController(updateUserService)
+
+  return updateUserController
 }

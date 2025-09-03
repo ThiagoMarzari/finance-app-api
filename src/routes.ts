@@ -2,20 +2,16 @@ import { Request, Response, Router } from 'express'
 import {
   CreateUserController,
   DeleteUserController,
-  UpdateUserController,
 } from './controllers/index.ts'
-import {
-  CreateUserService,
-  DeleteUserService,
-  UpdateUserService,
-} from './services/index.ts'
+import { CreateUserService, DeleteUserService } from './services/index.ts'
 import {
   CreateUserRepository,
   DeleteUserRepository,
-  GetUserByEmailRepository,
-  UpdateUserRepository,
 } from './repositories/index.ts'
-import { makeGetUserByIdController } from './factories/controllers/user.ts'
+import {
+  makeGetUserByIdController,
+  makeUpdateUserController,
+} from './factories/controllers/user.ts'
 
 export const router = Router()
 
@@ -33,13 +29,7 @@ router.get('/api/users/:id', async (req: Request, res: Response) => {
   await getUserByIdController.execute(req, res)
 })
 router.patch('/api/users/:id', async (req: Request, res: Response) => {
-  const updateUserRepository = new UpdateUserRepository()
-  const getUserByEmailRepository = new GetUserByEmailRepository()
-  const updateUserService = new UpdateUserService(
-    updateUserRepository,
-    getUserByEmailRepository,
-  )
-  const updateUserController = new UpdateUserController(updateUserService)
+  const updateUserController = makeUpdateUserController()
 
   await updateUserController.execute(req, res)
 })
