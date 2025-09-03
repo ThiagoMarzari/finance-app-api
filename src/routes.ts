@@ -2,22 +2,20 @@ import { Request, Response, Router } from 'express'
 import {
   CreateUserController,
   DeleteUserController,
-  GetUserByIdController,
   UpdateUserController,
 } from './controllers/index.ts'
 import {
   CreateUserService,
   DeleteUserService,
-  GetUserByIdService,
   UpdateUserService,
 } from './services/index.ts'
 import {
   CreateUserRepository,
   DeleteUserRepository,
   GetUserByEmailRepository,
-  GetUserByIdRepository,
   UpdateUserRepository,
 } from './repositories/index.ts'
+import { makeGetUserByIdController } from './factories/controllers/user.ts'
 
 export const router = Router()
 
@@ -30,9 +28,7 @@ router.post('/api/users', async (req: Request, res: Response) => {
   await createUserController.execute(req, res)
 })
 router.get('/api/users/:id', async (req: Request, res: Response) => {
-  const getUserByIdRepository = new GetUserByIdRepository()
-  const getUserByidService = new GetUserByIdService(getUserByIdRepository)
-  const getUserByIdController = new GetUserByIdController(getUserByidService)
+  const getUserByIdController = makeGetUserByIdController()
 
   await getUserByIdController.execute(req, res)
 })
