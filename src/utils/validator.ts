@@ -16,3 +16,67 @@ export const isValidPassword = (password: string) => {
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/
   return passwordRegex.test(password)
 }
+
+export const isValidCurrency = (currency: string | number) => {
+  // Validar se a string ou número representa uma moeda válida
+  if (currency === null || currency === undefined) {
+    return false
+  }
+
+  // Se for número, converter para string com 2 casas decimais
+  if (typeof currency === 'number') {
+    if (isNaN(currency) || currency < 0) {
+      return false
+    }
+    // Verificar se tem no máximo 2 casas decimais
+    const decimalPlaces = (currency.toString().split('.')[1] || '').length
+    return decimalPlaces <= 2
+  }
+
+  if (typeof currency !== 'string') {
+    return false
+  }
+
+  // Remove espaços em branco no início e fim
+  const trimmedCurrency = currency.trim()
+
+  // Regex para validar diferentes formatos monetários:
+  // - Símbolos de moeda opcionais: $, R$, €, £, ¥, etc.
+  // - Separadores de milhar: vírgula, ponto ou espaço
+  // - Separador decimal: vírgula ou ponto
+  // - Exatamente 2 casas decimais obrigatórias
+  const currencyRegex =
+    /^([R$€£¥$]?\s?)([0-9]{1,3}([.\s,][0-9]{3})*)([,.][0-9]{2})$/
+
+  if (!currencyRegex.test(trimmedCurrency)) {
+    return false
+  }
+
+  // Extrair a parte numérica para validações adicionais
+  const numericPart = trimmedCurrency.replace(/^[R$€£¥$]?\s?/, '')
+
+  // Verificar se tem exatamente 2 casas decimais
+  const decimalParts = numericPart.split(/[,.]/)
+  if (decimalParts.length < 2) {
+    return false
+  }
+
+  const decimalPart = decimalParts[decimalParts.length - 1]
+  if (decimalPart.length !== 2) {
+    return false
+  }
+
+  // Verificar se não há caracteres inválidos
+  const cleanNumber = numericPart.replace(/[^0-9,.]/g, '')
+  if (cleanNumber !== numericPart) {
+    return false
+  }
+
+  // Verificar se o valor é um número válido quando convertido
+  const normalizedNumber = numericPart
+    .replace(/[\s,]/g, '') // Remove espaços e vírgulas de separação de milhar
+    .replace(/,([0-9]{2})$/, '.$1') // Converte vírgula decimal para ponto
+
+  const numberValue = parseFloat(normalizedNumber)
+  return !isNaN(numberValue) && numberValue >= 0
+}

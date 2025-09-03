@@ -1,10 +1,12 @@
 import { Request, Response, Router } from 'express'
+
 import {
+  makeCreateTransactionController,
   makeCreateUserController,
   makeDeleteUserController,
   makeGetUserByIdController,
   makeUpdateUserController,
-} from './factories/controllers/user.ts'
+} from './factories/index.ts'
 
 export const router = Router()
 //-- ROTAS USER --//
@@ -27,4 +29,11 @@ router.delete('/api/users/:id', async (req: Request, res: Response) => {
   const deleteUserController = makeDeleteUserController()
 
   await deleteUserController.execute(req, res)
+})
+
+//-- ROTAS TRANSACTION --//
+router.post('/api/transactions', async (req: Request, res: Response) => {
+  const createTransactionController = makeCreateTransactionController()
+
+  await createTransactionController.execute(req, res)
 })
