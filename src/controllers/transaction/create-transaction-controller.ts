@@ -4,6 +4,12 @@ import { badRequest, created, internalServerError } from '../helpers/index.ts'
 import { isUUID, isValidCurrency } from '../../utils/validator.ts'
 import { CreateTransactionService } from '../../services/transactions/create-transaction-service.ts'
 
+enum TransactionType {
+  EARNING = 'EARNING',
+  EXPENSE = 'EXPENSE',
+  INVESTMENT = 'INVESTMENT',
+}
+
 export class CreateTransactionController {
   constructor(private createTransactionService: CreateTransactionService) {
     this.createTransactionService = createTransactionService
