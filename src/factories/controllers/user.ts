@@ -1,20 +1,24 @@
 import {
   CreateUserController,
+  DeleteUserController,
   GetUserByIdController,
   UpdateUserController,
 } from '../../controllers/index.ts'
 import {
   CreateUserRepository,
+  DeleteUserRepository,
   GetUserByEmailRepository,
   GetUserByIdRepository,
   UpdateUserRepository,
 } from '../../repositories/index.ts'
 import {
   CreateUserService,
+  DeleteUserService,
   GetUserByIdService,
   UpdateUserService,
 } from '../../services/index.ts'
 
+//------------------------------------------------//
 export const makeGetUserByIdController = () => {
   const getUserByIdRepository = new GetUserByIdRepository()
   const getUserByidService = new GetUserByIdService(getUserByIdRepository)
@@ -41,4 +45,11 @@ export const makeUpdateUserController = () => {
   const updateUserController = new UpdateUserController(updateUserService)
 
   return updateUserController
+}
+export const makeDeleteUserController = () => {
+  const deleteUserRepository = new DeleteUserRepository()
+  const deleteUserService = new DeleteUserService(deleteUserRepository)
+  const deleteUserController = new DeleteUserController(deleteUserService)
+
+  return deleteUserController
 }

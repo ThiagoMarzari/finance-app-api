@@ -4,7 +4,7 @@ import { Response } from 'express'
 export const invalidPasswordResponse = (res: Response) =>
   badRequest(
     res,
-    'Password must be at least 8 characters long and contain both numbers and letters',
+    'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character (!@#$%^&*)',
   )
 
 export const invalidEmailResponse = (res: Response) =>
