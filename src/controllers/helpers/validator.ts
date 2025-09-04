@@ -1,3 +1,15 @@
+import { badRequest } from './http.ts'
+import { Response } from 'express'
+
+export const invalidPasswordResponse = (res: Response) =>
+  badRequest(
+    res,
+    'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character (!@#$%^&*)',
+  )
+
+export const invalidEmailResponse = (res: Response) =>
+  badRequest(res, 'Email must be a valid email address')
+
 export const isEmail = (email: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   return emailRegex.test(email)
@@ -80,3 +92,6 @@ export const isValidCurrency = (currency: string | number) => {
   const numberValue = parseFloat(normalizedNumber)
   return !isNaN(numberValue) && numberValue >= 0
 }
+
+export const invalidIdResponse = (res: Response) =>
+  badRequest(res, 'User ID is invalid')

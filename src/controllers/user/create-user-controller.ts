@@ -1,6 +1,5 @@
 import { Request, Response } from 'express'
 import { CreateUserService } from '../../services/index.ts'
-import { isEmail, isValidPassword } from '../../utils/validator.ts'
 import { EmailAlreadyExists } from '../../errors/user.ts'
 import {
   badRequest,
@@ -8,6 +7,8 @@ import {
   internalServerError,
   invalidEmailResponse,
   invalidPasswordResponse,
+  isEmail,
+  isValidPassword,
 } from '../helpers/index.ts'
 export class CreateUserController {
   constructor(private createUserService: CreateUserService) {

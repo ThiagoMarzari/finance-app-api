@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { UserNotFound } from '../../errors/user.ts'
 import { badRequest, created, internalServerError } from '../helpers/index.ts'
-import { isUUID, isValidCurrency } from '../../utils/validator.ts'
+import { isUUID, isValidCurrency } from '../helpers/index.ts'
 import { CreateTransactionService } from '../../services/transactions/create-transaction-service.ts'
 
 enum TransactionType {

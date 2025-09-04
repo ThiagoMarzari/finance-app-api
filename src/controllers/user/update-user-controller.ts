@@ -1,7 +1,7 @@
 import { UpdateUserService } from '../../services/index.ts'
 import { EmailAlreadyExists } from '../../errors/user.ts'
 import { Request, Response } from 'express'
-import { isEmail, isUUID, isValidPassword } from '../../utils/validator.ts'
+import { isEmail, isUUID, isValidPassword } from '../helpers/index.ts'
 import {
   invalidIdResponse,
   invalidEmailResponse,

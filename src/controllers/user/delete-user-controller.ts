@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { DeleteUserService } from '../../services/index.ts'
-import { isUUID } from '../../utils/validator.ts'
+import { isUUID } from '../helpers/index.ts'
 import {
   badRequest,
   internalServerError,
