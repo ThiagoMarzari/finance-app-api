@@ -5,11 +5,12 @@ import {
   badRequest,
   created,
   internalServerError,
-  invalidEmailResponse,
-  invalidPasswordResponse,
+  invalidEmailMessage,
+  invalidPasswordMessage,
   isEmail,
   isValidPassword,
 } from '../helpers/index.ts'
+
 export class CreateUserController {
   constructor(private createUserService: CreateUserService) {
     this.createUserService = createUserService
@@ -31,11 +32,11 @@ export class CreateUserController {
       }
 
       if (!isEmail(email)) {
-        return invalidEmailResponse(res)
+        return badRequest(res, invalidEmailMessage)
       }
 
       if (!isValidPassword(password)) {
-        return invalidPasswordResponse(res)
+        return badRequest(res, invalidPasswordMessage)
       }
 
       const createdUser = await this.createUserService.execute({
@@ -50,7 +51,7 @@ export class CreateUserController {
         return badRequest(res, error.message)
       }
       console.error('Error creating user:', error)
-      return internalServerError(res)
+      return internalServerError(res, 'Internal server error')
     }
   }
 }

@@ -1,11 +1,11 @@
 import { Request, Response } from 'express'
 import { GetUserByIdService } from '../../services/index.ts'
-import { isUUID } from '../helpers/index.ts'
 import {
   badRequest,
   internalServerError,
   notFound,
   ok,
+  isUUID,
 } from '../helpers/index.ts'
 
 export class GetUserByIdController {

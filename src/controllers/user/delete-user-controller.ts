@@ -1,11 +1,11 @@
 import { Request, Response } from 'express'
 import { DeleteUserService } from '../../services/index.ts'
-import { isUUID } from '../helpers/index.ts'
 import {
   badRequest,
   internalServerError,
   notFound,
   ok,
+  isUUID,
 } from '../helpers/index.ts'
 
 export class DeleteUserController {

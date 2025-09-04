@@ -1,7 +1,8 @@
 import bcrypt from 'bcryptjs'
-import { EmailAlreadyExists } from '../../errors/user.ts'
+import { EmailAlreadyExists, UserNotFound } from '../../errors/user.ts'
 import {
   GetUserByEmailRepository,
+  GetUserByIdRepository,
   UpdateUserRepository,
 } from '../../repositories/index.ts'
 
@@ -16,9 +17,11 @@ export class UpdateUserService {
   constructor(
     private updateUserRepository: UpdateUserRepository,
     private getUserByEmailRepository: GetUserByEmailRepository,
+    private getUserByIdRepository: GetUserByIdRepository,
   ) {
     this.updateUserRepository = updateUserRepository
     this.getUserByEmailRepository = getUserByEmailRepository
+    this.getUserByIdRepository = getUserByIdRepository
   }
   async execute(userId: string, updateUser: updateUserProps) {
     if (updateUser.email) {
@@ -29,6 +32,12 @@ export class UpdateUserService {
         throw new EmailAlreadyExists(existsUser.email)
       }
     }
+
+    const existsUser = await this.getUserByIdRepository.execute(userId)
+    if (!existsUser) {
+      throw new UserNotFound(userId)
+    }
+
     const user = {
       ...updateUser,
     }

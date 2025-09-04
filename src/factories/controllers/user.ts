@@ -38,9 +38,11 @@ export const makeCreateUserController = () => {
 export const makeUpdateUserController = () => {
   const updateUserRepository = new UpdateUserRepository()
   const getUserByEmailRepository = new GetUserByEmailRepository()
+  const getUserByIdRepository = new GetUserByIdRepository()
   const updateUserService = new UpdateUserService(
     updateUserRepository,
     getUserByEmailRepository,
+    getUserByIdRepository,
   )
   const updateUserController = new UpdateUserController(updateUserService)
 

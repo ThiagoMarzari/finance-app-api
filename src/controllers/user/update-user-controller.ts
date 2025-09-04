@@ -1,15 +1,13 @@
 import { UpdateUserService } from '../../services/index.ts'
-import { EmailAlreadyExists } from '../../errors/user.ts'
+import { EmailAlreadyExists, UserNotFound } from '../../errors/user.ts'
 import { Request, Response } from 'express'
-import { isEmail, isUUID, isValidPassword } from '../helpers/index.ts'
 import {
-  invalidIdResponse,
-  invalidEmailResponse,
-  badRequest,
-  internalServerError,
-  invalidPasswordResponse,
-  ok,
+  invalidPasswordMessage,
+  isEmail,
+  isUUID,
+  isValidPassword,
 } from '../helpers/index.ts'
+import { badRequest, internalServerError, ok } from '../helpers/index.ts'
 
 export class UpdateUserController {
   constructor(private updateUserService: UpdateUserService) {
@@ -21,7 +19,7 @@ export class UpdateUserController {
       const { id } = req.params
 
       if (!isUUID(id)) {
-        return invalidIdResponse(res)
+        return badRequest(res, 'User ID is invalid')
       }
 
       if (!first_name && !last_name && !email && !password) {
@@ -29,11 +27,11 @@ export class UpdateUserController {
       }
 
       if (email && !isEmail(email)) {
-        return invalidEmailResponse(res)
+        return badRequest(res, 'Email must be a valid email address')
       }
 
       if (password && !isValidPassword(password)) {
-        return invalidPasswordResponse(res)
+        return badRequest(res, invalidPasswordMessage)
       }
 
       const updatedUser = await this.updateUserService.execute(id, {
@@ -47,8 +45,11 @@ export class UpdateUserController {
       if (error instanceof EmailAlreadyExists) {
         return badRequest(res, error.message)
       }
+      if (error instanceof UserNotFound) {
+        return badRequest(res, error.message)
+      }
       console.error('Error updating user:', error)
-      return internalServerError(res)
+      return internalServerError(res, 'Internal server error')
     }
   }
 }
