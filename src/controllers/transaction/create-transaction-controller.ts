@@ -3,12 +3,7 @@ import { UserNotFound } from '../../errors/user.ts'
 import { badRequest, created, internalServerError } from '../helpers/index.ts'
 import { isUUID, isValidCurrency } from '../helpers/index.ts'
 import { CreateTransactionService } from '../../services/transactions/create-transaction-service.ts'
-
-enum TransactionType {
-  EARNING = 'EARNING',
-  EXPENSE = 'EXPENSE',
-  INVESTMENT = 'INVESTMENT',
-}
+import { checkIfTransactionTypeIsValid } from '../helpers/transaction-helper.ts'
 
 export class CreateTransactionController {
   constructor(private createTransactionService: CreateTransactionService) {
@@ -35,9 +30,7 @@ export class CreateTransactionController {
         return badRequest(res, 'Invalid user_id format')
       }
 
-      const typeUpperCase = type.toUpperCase() as TransactionType
-
-      if (!Object.values(TransactionType).includes(typeUpperCase)) {
+      if (!checkIfTransactionTypeIsValid(type)) {
         return badRequest(
           res,
           'Invalid transaction type. Must be EARNING, EXPENSE, or INVESTMENT',
@@ -53,7 +46,7 @@ export class CreateTransactionController {
         name,
         date,
         amount,
-        type: typeUpperCase,
+        type,
       })
 
       return created(res, createdTransaction)
