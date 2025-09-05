@@ -18,10 +18,7 @@ export const ok = (
     message: 'OK',
   },
 ) => {
-  return res.status(status.code).json({
-    message: status.message,
-    data,
-  })
+  return res.status(status.code).json(data)
 }
 
 export const created = (
@@ -32,10 +29,7 @@ export const created = (
     message: 'Created',
   },
 ) => {
-  return res.status(status.code).json({
-    message: status.message,
-    data,
-  })
+  return res.status(status.code).json(data)
 }
 
 export const internalServerError = (
@@ -46,7 +40,7 @@ export const internalServerError = (
     message: 'Internal Server Error',
   },
 ) => {
-  return res.status(status.code).json({ message })
+  return res.status(status.code).json(message)
 }
 
 export const notFound = (
@@ -57,5 +51,5 @@ export const notFound = (
     message: 'Not Found',
   },
 ) => {
-  return res.status(status.code).json({ message })
+  return res.status(status.code).json(message)
 }
