@@ -1,15 +1,18 @@
 import {
   CreateTransactionController,
   GetTransactionByUserIdController,
+  UpdateTransactionController,
 } from '../../controllers/index.ts'
 import {
   CreateTransactionRepository,
   GetTransactionByUserRepository,
   GetUserByIdRepository,
+  UpdateTransactionRepository,
 } from '../../repositories/index.ts'
 import {
   CreateTransactionService,
   GetTransactionByUserIdService,
+  UpdateTransactionService,
 } from '../../services/index.ts'
 
 //------------------------------------------------//
@@ -40,4 +43,16 @@ export const makeGetTransactionByUserIdController = () => {
   )
 
   return getTransactionByUserIdController
+}
+
+export const makeUpdateTransactionController = () => {
+  const updateTransactionRepository = new UpdateTransactionRepository()
+  const updateTransactionService = new UpdateTransactionService(
+    updateTransactionRepository,
+  )
+  const updateTransactionController = new UpdateTransactionController(
+    updateTransactionService,
+  )
+
+  return updateTransactionController
 }
