@@ -4,6 +4,7 @@ import {
   makeCreateTransactionController,
   makeCreateUserController,
   makeDeleteUserController,
+  makeGetTransactionByUserIdController,
   makeGetUserByIdController,
   makeUpdateUserController,
 } from './factories/index.ts'
@@ -36,4 +37,11 @@ router.post('/api/transactions', async (req: Request, res: Response) => {
   const createTransactionController = makeCreateTransactionController()
 
   await createTransactionController.execute(req, res)
+})
+
+router.get('/api/transactions/', async (req: Request, res: Response) => {
+  const getTransactionByUserIdController =
+    makeGetTransactionByUserIdController()
+
+  await getTransactionByUserIdController.execute(req, res)
 })
