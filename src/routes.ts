@@ -3,6 +3,7 @@ import { Request, Response, Router } from 'express'
 import {
   makeCreateTransactionController,
   makeCreateUserController,
+  makeDeleteTransactionController,
   makeDeleteUserController,
   makeGetTransactionByUserIdController,
   makeGetUserByIdController,
@@ -51,4 +52,10 @@ router.patch('/api/transactions/:id', async (req: Request, res: Response) => {
   const updateTransactionController = makeUpdateTransactionController()
 
   await updateTransactionController.execute(req, res)
+})
+
+router.delete('/api/transactions/:id', async (req: Request, res: Response) => {
+  const deleteTransactionController = makeDeleteTransactionController()
+
+  await deleteTransactionController.execute(req, res)
 })
