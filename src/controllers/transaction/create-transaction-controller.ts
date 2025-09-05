@@ -30,6 +30,8 @@ export class CreateTransactionController {
         return badRequest(res, 'Invalid user_id format')
       }
 
+      const typeUpperCase = type.toUpperCase()
+
       if (!checkIfTransactionTypeIsValid(type)) {
         return badRequest(
           res,
@@ -46,7 +48,7 @@ export class CreateTransactionController {
         name,
         date,
         amount,
-        type,
+        type: typeUpperCase,
       })
 
       return created(res, createdTransaction)

@@ -2,7 +2,7 @@ import { Response } from 'express'
 
 // Helper functions para respostas padronizadas
 export const badRequest = (res: Response, message: string) => {
-  return res.status(400).json({ message })
+  return res.status(400).json(message)
 }
 
 type status = {
