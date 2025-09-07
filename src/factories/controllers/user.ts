@@ -2,6 +2,7 @@ import {
   CreateUserController,
   DeleteUserController,
   GetUserByIdController,
+  GetUserBalanceController,
   UpdateUserController,
 } from '../../controllers/index.ts'
 import {
@@ -9,12 +10,14 @@ import {
   DeleteUserRepository,
   GetUserByEmailRepository,
   GetUserByIdRepository,
+  GetUserBalanceRepository,
   UpdateUserRepository,
 } from '../../repositories/index.ts'
 import {
   CreateUserService,
   DeleteUserService,
   GetUserByIdService,
+  GetUserBalanceService,
   UpdateUserService,
 } from '../../services/index.ts'
 
@@ -54,4 +57,18 @@ export const makeDeleteUserController = () => {
   const deleteUserController = new DeleteUserController(deleteUserService)
 
   return deleteUserController
+}
+
+export const makeGetUserBalanceController = () => {
+  const getUserBalanceRepository = new GetUserBalanceRepository()
+  const getUserByIdRepository = new GetUserByIdRepository()
+  const getUserBalanceService = new GetUserBalanceService(
+    getUserBalanceRepository,
+    getUserByIdRepository,
+  )
+  const getUserBalanceController = new GetUserBalanceController(
+    getUserBalanceService,
+  )
+
+  return getUserBalanceController
 }

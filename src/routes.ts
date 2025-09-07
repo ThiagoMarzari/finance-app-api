@@ -7,6 +7,7 @@ import {
   makeDeleteUserController,
   makeGetTransactionByUserIdController,
   makeGetUserByIdController,
+  makeGetUserBalanceController,
   makeUpdateTransactionController,
   makeUpdateUserController,
 } from './factories/index.ts'
@@ -33,6 +34,15 @@ router.delete('/api/users/:id', async (req: Request, res: Response) => {
 
   await deleteUserController.execute(req, res)
 })
+
+router.get(
+  '/api/users/:userId/balance',
+  async (req: Request, res: Response) => {
+    const getUserBalanceController = makeGetUserBalanceController()
+
+    await getUserBalanceController.execute(req, res)
+  },
+)
 
 //-- ROTAS TRANSACTION --//
 router.post('/api/transactions', async (req: Request, res: Response) => {
