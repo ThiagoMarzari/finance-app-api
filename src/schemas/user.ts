@@ -19,3 +19,5 @@ export const createUserSchema = z.object({
       'Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character',
     ),
 })
+
+export const updateUserSchema = createUserSchema.partial().strict()
