@@ -3,19 +3,14 @@ import {
   CreateTransactionRepository,
   GetUserByIdRepository,
 } from '../../repositories/index.ts'
-
-enum TransactionType {
-  EARNING = 'EARNING',
-  EXPENSE = 'EXPENSE',
-  INVESTMENT = 'INVESTMENT',
-}
+import { TransactionTypeEnum } from '../../schemas/transaction.ts'
 
 interface CreateTransactionParams {
   userId: string
   name: string
   date: string
   amount: number
-  type: TransactionType
+  type: TransactionTypeEnum
 }
 
 export class CreateTransactionService {

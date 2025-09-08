@@ -1,10 +1,5 @@
 import { postgresClient } from '../../db/postgres/helper.ts'
-
-enum TransactionType {
-  EARNING = 'EARNING',
-  EXPENSE = 'EXPENSE',
-  INVESTMENT = 'INVESTMENT',
-}
+import { TransactionTypeEnum } from '../../schemas/transaction.ts'
 
 interface CreateTransactionParams {
   id: string
@@ -12,7 +7,7 @@ interface CreateTransactionParams {
   name: string
   date: string
   amount: number
-  type: TransactionType
+  type: TransactionTypeEnum
 }
 
 export class CreateTransactionRepository {
