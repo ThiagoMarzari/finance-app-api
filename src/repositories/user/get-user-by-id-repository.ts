@@ -6,6 +6,13 @@ export class GetUserByIdRepository {
       where: {
         id,
       },
+      select: {
+        id: true,
+        email: true,
+        first_name: true,
+        last_name: true,
+        created_at: true,
+      },
     })
 
     return user

@@ -1,4 +1,4 @@
-import { postgresClient } from '../../db/postgres/helper.ts'
+import { prisma } from '../../db/prisma/index.ts'
 import { TransactionTypeEnum } from '../../schemas/transaction.ts'
 
 interface CreateTransactionParams {
@@ -19,19 +19,16 @@ export class CreateTransactionRepository {
     amount,
     type,
   }: CreateTransactionParams) {
-    const query = `
-      INSERT INTO transactions (id, user_id, name, date, amount, type)
-      VALUES ($1, $2, $3, $4, $5, $6) RETURNING *
-    `
-
-    const result = await postgresClient.query(query, [
-      id,
-      userId,
-      name,
-      date,
-      amount.toString(),
-      type,
-    ])
-    return result[0]
+    const transaction = prisma.transaction.create({
+      data: {
+        id,
+        user_id: userId,
+        name,
+        date,
+        amount,
+        type,
+      },
+    })
+    return transaction
   }
 }
