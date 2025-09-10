@@ -1,3 +1,4 @@
+import { Prisma } from '../../db/prisma/generated/prisma/edge.js'
 import { prisma } from '../../db/prisma/index.ts'
 
 export class GetUserBalanceRepository {
@@ -38,14 +39,17 @@ export class GetUserBalanceRepository {
       },
     })
 
-    const _totalEarnings = Number(totalEarnings ?? 0)
-    const _totalExpenses = Number(totalExpenses ?? 0)
-    const _totalInvestments = Number(totalInvestments ?? 0)
+    const _totalEarnings = totalEarnings ?? new Prisma.Decimal(0)
+    const _totalExpenses = totalExpenses ?? new Prisma.Decimal(0)
+    const _totalInvestments = totalInvestments ?? new Prisma.Decimal(0)
 
-    const balance = _totalEarnings - _totalExpenses - _totalInvestments
+    const balance =
+      Number(_totalEarnings) -
+      Number(_totalExpenses) -
+      Number(_totalInvestments)
 
     return {
-      balance,
+      balance: String(balance),
       totalEarnings: _totalEarnings,
       totalExpenses: _totalExpenses,
       totalInvestments: _totalInvestments,
