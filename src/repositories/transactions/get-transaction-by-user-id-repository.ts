@@ -1,12 +1,13 @@
-import { postgresClient } from '../../db/postgres/helper.ts'
+import { prisma } from '../../db/prisma/index.ts'
 
 export class GetTransactionByUserRepository {
   async execute(userId: string) {
-    const query = `
-      SELECT * FROM transactions WHERE user_id = $1
-    `
-    const transaction = postgresClient.query(query, [userId])
+    const transactions = await prisma.transaction.findMany({
+      where: {
+        user_id: userId,
+      },
+    })
 
-    return transaction
+    return transactions
   }
 }
