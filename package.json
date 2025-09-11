@@ -11,7 +11,8 @@
     "postinstall": "npx husky",
     "start": "node --no-warnings --loader ts-node/esm src/server.ts",
     "dev": "node --no-warnings --watch --loader ts-node/esm src/server.ts",
-    "db:migrate": "node --no-warnings --loader ts-node/esm src/db/migrations/migrate.ts"
+    "db:migrate": "npx prisma migrate",
+    "db:generate": "npx prisma generate"
   },
   "keywords": [],
   "author": "",
