@@ -15,57 +15,41 @@ import {
 export const router = Router()
 //-- ROTAS USER --//
 router.post('/api/users', async (req: Request, res: Response) => {
-  const createUserController = makeCreateUserController()
-
-  await createUserController.execute(req, res)
+  await makeCreateUserController().execute(req, res)
 })
+
 router.get('/api/users/:id', async (req: Request, res: Response) => {
-  const getUserByIdController = makeGetUserByIdController()
-
-  await getUserByIdController.execute(req, res)
+  await makeGetUserByIdController().execute(req, res)
 })
+
 router.patch('/api/users/:id', async (req: Request, res: Response) => {
-  const updateUserController = makeUpdateUserController()
-
-  await updateUserController.execute(req, res)
+  await makeUpdateUserController().execute(req, res)
 })
-router.delete('/api/users/:id', async (req: Request, res: Response) => {
-  const deleteUserController = makeDeleteUserController()
 
-  await deleteUserController.execute(req, res)
+router.delete('/api/users/:id', async (req: Request, res: Response) => {
+  await makeDeleteUserController().execute(req, res)
 })
 
 router.get(
   '/api/users/:userId/balance',
   async (req: Request, res: Response) => {
-    const getUserBalanceController = makeGetUserBalanceController()
-
-    await getUserBalanceController.execute(req, res)
+    await makeGetUserBalanceController().execute(req, res)
   },
 )
 
 //-- ROTAS TRANSACTION --//
 router.post('/api/transactions', async (req: Request, res: Response) => {
-  const createTransactionController = makeCreateTransactionController()
-
-  await createTransactionController.execute(req, res)
+  await makeCreateTransactionController().execute(req, res)
 })
 
 router.get('/api/transactions/', async (req: Request, res: Response) => {
-  const getTransactionByUserIdController =
-    makeGetTransactionByUserIdController()
-
-  await getTransactionByUserIdController.execute(req, res)
+  await makeGetTransactionByUserIdController().execute(req, res)
 })
 
 router.patch('/api/transactions/:id', async (req: Request, res: Response) => {
-  const updateTransactionController = makeUpdateTransactionController()
-
-  await updateTransactionController.execute(req, res)
+  await makeUpdateTransactionController().execute(req, res)
 })
 
 router.delete('/api/transactions/:id', async (req: Request, res: Response) => {
-  const deleteTransactionController = makeDeleteTransactionController()
-
-  await deleteTransactionController.execute(req, res)
+  await makeDeleteTransactionController().execute(req, res)
 })
