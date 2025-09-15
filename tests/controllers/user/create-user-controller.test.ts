@@ -83,4 +83,25 @@ describe('CreateUserController', () => {
     //assert
     expect(res.status).toHaveBeenCalledWith(400)
   })
+  it('should return 400 if last_name is not provided', async () => {
+    //arrange
+    const createUserController = new CreateUserController(
+      createUserServiceMock as unknown as CreateUserService,
+    )
+
+    req = {
+      body: {
+        first_name: 'John',
+        email: 'john.doe@example.com',
+        password: 'Password123!',
+      },
+    }
+
+    //act
+
+    await createUserController.execute(req as Request, res as Response)
+
+    //assert
+    expect(res.status).toHaveBeenCalledWith(400)
+  })
 })
