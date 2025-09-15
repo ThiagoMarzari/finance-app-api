@@ -46,4 +46,30 @@ describe('CreateUserController', () => {
     //Assert - Verificacao
     expect(fakeResponse.status).toHaveBeenCalledWith(201)
   })
+
+  it('should return status 400 if firstName is empty', async () => {
+    //arrange
+    const fakerService = {
+      execute: jest.fn(),
+    }
+    const createUserController = new CreateUserController(
+      fakerService as unknown as CreateUserService,
+    )
+    const request = {
+      body: {
+        first_name: '',
+        last_name: 'Doee',
+        email: 'john.doe@example.com',
+        password: 'Password123!',
+      },
+    } as Partial<Request>
+    const response = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    } as Partial<Response>
+    //act
+    await createUserController.execute(request as Request, response as Response)
+    //assert
+    expect(response.status).toHaveBeenCalledWith(400)
+  })
 })
