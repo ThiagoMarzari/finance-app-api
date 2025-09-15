@@ -63,11 +63,7 @@ describe('CreateUserController', () => {
   })
 
   it('Should return 400 if first_name is not provided', async () => {
-    //arrange
-    const createUserController = new CreateUserController(
-      createUserServiceMock as unknown as CreateUserService,
-    )
-
+    // arrange
     req = {
       body: {
         last_name: 'Doe',
@@ -76,20 +72,15 @@ describe('CreateUserController', () => {
       },
     }
 
-    //act
-
+    // act
     await createUserController.execute(req as Request, res as Response)
 
-    //assert
+    // assert
     expect(res.status).toHaveBeenCalledWith(400)
   })
 
   it('should return 400 if last_name is not provided', async () => {
-    //arrange
-    const createUserController = new CreateUserController(
-      createUserServiceMock as unknown as CreateUserService,
-    )
-
+    // arrange
     req = {
       body: {
         first_name: 'John',
@@ -98,20 +89,15 @@ describe('CreateUserController', () => {
       },
     }
 
-    //act
-
+    // act
     await createUserController.execute(req as Request, res as Response)
 
-    //assert
+    // assert
     expect(res.status).toHaveBeenCalledWith(400)
   })
 
   it('should return 400 if email is not provided', async () => {
-    //arrange
-    const createUserController = new CreateUserController(
-      createUserServiceMock as unknown as CreateUserService,
-    )
-
+    // arrange
     req = {
       body: {
         first_name: 'John',
@@ -120,20 +106,15 @@ describe('CreateUserController', () => {
       },
     }
 
-    //act
-
+    // act
     await createUserController.execute(req as Request, res as Response)
 
-    //assert
+    // assert
     expect(res.status).toHaveBeenCalledWith(400)
   })
 
   it('should return 400 if password is not provided', async () => {
-    //arrange
-    const createUserController = new CreateUserController(
-      createUserServiceMock as unknown as CreateUserService,
-    )
-
+    // arrange
     req = {
       body: {
         first_name: 'John',
@@ -142,20 +123,15 @@ describe('CreateUserController', () => {
       },
     }
 
-    //act
-
+    // act
     await createUserController.execute(req as Request, res as Response)
 
-    //assert
+    // assert
     expect(res.status).toHaveBeenCalledWith(400)
   })
 
   it('should return 400 if email is not valid', async () => {
-    //arrange
-    const createUserController = new CreateUserController(
-      createUserServiceMock as unknown as CreateUserService,
-    )
-
+    // arrange
     req = {
       body: {
         first_name: 'John',
@@ -165,20 +141,15 @@ describe('CreateUserController', () => {
       },
     }
 
-    //act
-
+    // act
     await createUserController.execute(req as Request, res as Response)
 
-    //assert
+    // assert
     expect(res.status).toHaveBeenCalledWith(400)
   })
 
   it('should return 400 if password is not valid', async () => {
-    //arrange
-    const createUserController = new CreateUserController(
-      createUserServiceMock as unknown as CreateUserService,
-    )
-
+    // arrange
     req = {
       body: {
         first_name: 'John',
@@ -188,20 +159,15 @@ describe('CreateUserController', () => {
       },
     }
 
-    //act
-
+    // act
     await createUserController.execute(req as Request, res as Response)
 
-    //assert
+    // assert
     expect(res.status).toHaveBeenCalledWith(400)
   })
 
   it('should return 400 if first_name is not valid', async () => {
-    //arrange
-    const createUserController = new CreateUserController(
-      createUserServiceMock as unknown as CreateUserService,
-    )
-
+    // arrange
     req = {
       body: {
         first_name: 'J',
@@ -211,11 +177,37 @@ describe('CreateUserController', () => {
       },
     }
 
-    //act
-
+    // act
     await createUserController.execute(req as Request, res as Response)
 
-    //assert
+    // assert
     expect(res.status).toHaveBeenCalledWith(400)
+  })
+
+  it('Should call CreateUserService with correct params', async () => {
+    // arrange
+    req = {
+      body: {
+        first_name: 'John',
+        last_name: 'Doe',
+        email: 'john.doe@example.com',
+        password: 'Password123!',
+      },
+    }
+
+    const executeSpy = jest.spyOn(createUserServiceMock, 'execute')
+
+    // act
+    await createUserController.execute(req as Request, res as Response)
+
+    // assert
+    expect(executeSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'john.doe@example.com',
+        password: 'Password123!',
+      }),
+    )
   })
 })
