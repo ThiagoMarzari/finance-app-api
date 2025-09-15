@@ -149,4 +149,73 @@ describe('CreateUserController', () => {
     //assert
     expect(res.status).toHaveBeenCalledWith(400)
   })
+
+  it('should return 400 if email is not valid', async () => {
+    //arrange
+    const createUserController = new CreateUserController(
+      createUserServiceMock as unknown as CreateUserService,
+    )
+
+    req = {
+      body: {
+        first_name: 'John',
+        last_name: 'Doe',
+        email: 'invalid-email',
+        password: 'Password123!',
+      },
+    }
+
+    //act
+
+    await createUserController.execute(req as Request, res as Response)
+
+    //assert
+    expect(res.status).toHaveBeenCalledWith(400)
+  })
+
+  it('should return 400 if password is not valid', async () => {
+    //arrange
+    const createUserController = new CreateUserController(
+      createUserServiceMock as unknown as CreateUserService,
+    )
+
+    req = {
+      body: {
+        first_name: 'John',
+        last_name: 'Doe',
+        email: 'john.doe@example.com',
+        password: '123456!!',
+      },
+    }
+
+    //act
+
+    await createUserController.execute(req as Request, res as Response)
+
+    //assert
+    expect(res.status).toHaveBeenCalledWith(400)
+  })
+
+  it('should return 400 if first_name is not valid', async () => {
+    //arrange
+    const createUserController = new CreateUserController(
+      createUserServiceMock as unknown as CreateUserService,
+    )
+
+    req = {
+      body: {
+        first_name: 'J',
+        last_name: 'Doe',
+        email: 'john.doe@example.com',
+        password: 'Password123!',
+      },
+    }
+
+    //act
+
+    await createUserController.execute(req as Request, res as Response)
+
+    //assert
+    expect(res.status).toHaveBeenCalledWith(400)
+  })
 })
