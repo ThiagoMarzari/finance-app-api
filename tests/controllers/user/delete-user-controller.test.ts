@@ -43,4 +43,31 @@ describe('DeleteUserController', () => {
     //assert
     expect(response.status).toHaveBeenCalledWith(200)
   })
+
+  it('should return status 400 if UUID is invalid', async () => {
+    //arrange
+    request.params = { id: 'invalid-uuid' }
+    //act
+    await deleteUserController.execute(request as Request, response as Response)
+    //assert
+    expect(response.status).toHaveBeenCalledWith(400)
+  })
+
+  it('should return status 404 if user is not found', async () => {
+    //arrange
+    fakeService.execute.mockResolvedValue(null)
+    //act
+    await deleteUserController.execute(request as Request, response as Response)
+    //assert
+    expect(response.status).toHaveBeenCalledWith(404)
+  })
+
+  it('should return status 500 if an error occurs', async () => {
+    //arrange
+    fakeService.execute.mockRejectedValue(new Error('Internal server error'))
+    //act
+    await deleteUserController.execute(request as Request, response as Response)
+    //assert
+    expect(response.status).toHaveBeenCalledWith(500)
+  })
 })
