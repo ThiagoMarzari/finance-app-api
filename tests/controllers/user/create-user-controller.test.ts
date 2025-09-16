@@ -7,6 +7,22 @@ describe('CreateUserController', () => {
   let request: Partial<Request>
   let response: Partial<Response>
 
+  beforeEach(() => {
+    request = {
+      body: {
+        first_name: 'John',
+        last_name: 'Doee',
+        email: 'john.doe@example.com',
+        password: 'Password123!',
+      },
+    }
+
+    response = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    }
+  })
+
   const makeSut = () => {
     const service = {
       execute: jest.fn(),
@@ -24,27 +40,8 @@ describe('CreateUserController', () => {
   it('should return status 201 when user is created', async () => {
     //arrange - Preparacao
     const { createUserController } = makeSut()
-
-    //fake request
-    request = {
-      body: {
-        first_name: 'John',
-        last_name: 'Doee',
-        email: 'john.doe@example.com',
-        password: 'Password123!',
-      },
-    }
-
-    //fake response
-    response = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    }
-
     //ACT - Acao
-
     await createUserController.execute(request as Request, response as Response)
-
     //Assert - Verificacao
     expect(response.status).toHaveBeenCalledWith(201)
   })
@@ -52,18 +49,7 @@ describe('CreateUserController', () => {
   it('should return status 400 if firstName is empty', async () => {
     //arrange
     const { createUserController } = makeSut()
-    request = {
-      body: {
-        first_name: '',
-        last_name: 'Doee',
-        email: 'john.doe@example.com',
-        password: 'Password123!',
-      },
-    }
-    response = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    }
+    request.body.first_name = ''
     //act
     await createUserController.execute(request as Request, response as Response)
     //assert
@@ -73,18 +59,6 @@ describe('CreateUserController', () => {
     //arrange
     const { createUserController, fakerService } = makeSut()
     fakerService.execute.mockRejectedValue(new Error('Error'))
-    request = {
-      body: {
-        first_name: 'John',
-        last_name: 'Doee',
-        email: 'john.doe@example.com',
-        password: 'Password123!',
-      },
-    }
-    response = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    }
 
     //act
     await createUserController.execute(request as Request, response as Response)
@@ -92,27 +66,12 @@ describe('CreateUserController', () => {
     expect(response.status).toHaveBeenCalledWith(500)
   })
 
-  it('should return 500 if CreateUserService throws EmailIsAlreadyInUse Error', async () => {
-    //arrange
+  it('should return 400 if CreateUserService throws EmailIsAlreadyInUse Error', async () => {
     const { createUserController, fakerService } = makeSut()
     fakerService.execute.mockRejectedValue(
       new EmailAlreadyExists('Email already exists'),
     )
-    request = {
-      body: {
-        first_name: 'John',
-        last_name: 'Doee',
-        email: 'john.doe@example.com',
-        password: 'Password123!',
-      },
-    }
-    response = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    }
-    //act
     await createUserController.execute(request as Request, response as Response)
-    //assert
     expect(response.status).toHaveBeenCalledWith(400)
   })
 })
