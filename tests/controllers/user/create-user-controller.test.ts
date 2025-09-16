@@ -4,6 +4,8 @@ import { CreateUserService } from '../../../src/services'
 import { EmailAlreadyExists } from '../../../src/errors/user'
 
 describe('CreateUserController', () => {
+  let createUserController: CreateUserController
+  let fakeService: { execute: jest.Mock }
   let request: Partial<Request>
   let response: Partial<Response>
 
@@ -16,30 +18,20 @@ describe('CreateUserController', () => {
         password: 'Password123!',
       },
     }
-
     response = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
     }
-  })
 
-  const makeSut = () => {
-    const service = {
-      execute: jest.fn(),
-    }
+    const service = { execute: jest.fn() }
     const sut = new CreateUserController(
       service as unknown as CreateUserService,
     )
-
-    return {
-      fakerService: service,
-      createUserController: sut,
-    }
-  }
+    createUserController = sut
+    fakeService = service
+  })
 
   it('should return status 201 when user is created', async () => {
-    //arrange - Preparacao
-    const { createUserController } = makeSut()
     //ACT - Acao
     await createUserController.execute(request as Request, response as Response)
     //Assert - Verificacao
@@ -48,8 +40,15 @@ describe('CreateUserController', () => {
 
   it('should return status 400 if firstName is empty', async () => {
     //arrange
-    const { createUserController } = makeSut()
     request.body.first_name = ''
+    //act
+    await createUserController.execute(request as Request, response as Response)
+    //assert
+    expect(response.status).toHaveBeenCalledWith(400)
+  })
+  it('should return status 400 if password is invalid', async () => {
+    //arrange
+    request.body.password = '12345678'
     //act
     await createUserController.execute(request as Request, response as Response)
     //assert
@@ -57,8 +56,7 @@ describe('CreateUserController', () => {
   })
   it('should return 500 if CreateUserService throws', async () => {
     //arrange
-    const { createUserController, fakerService } = makeSut()
-    fakerService.execute.mockRejectedValue(new Error('Error'))
+    fakeService.execute.mockRejectedValue(new Error('Error'))
 
     //act
     await createUserController.execute(request as Request, response as Response)
@@ -67,8 +65,7 @@ describe('CreateUserController', () => {
   })
 
   it('should return 400 if CreateUserService throws EmailIsAlreadyInUse Error', async () => {
-    const { createUserController, fakerService } = makeSut()
-    fakerService.execute.mockRejectedValue(
+    fakeService.execute.mockRejectedValue(
       new EmailAlreadyExists('Email already exists'),
     )
     await createUserController.execute(request as Request, response as Response)
