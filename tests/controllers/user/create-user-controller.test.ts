@@ -4,6 +4,9 @@ import { CreateUserService } from '../../../src/services'
 import { EmailAlreadyExists } from '../../../src/errors/user'
 
 describe('CreateUserController', () => {
+  let request: Partial<Request>
+  let response: Partial<Response>
+
   const makeSut = () => {
     const service = {
       execute: jest.fn(),
@@ -23,47 +26,44 @@ describe('CreateUserController', () => {
     const { createUserController } = makeSut()
 
     //fake request
-    const fakeRequest = {
+    request = {
       body: {
         first_name: 'John',
         last_name: 'Doee',
         email: 'john.doe@example.com',
         password: 'Password123!',
       },
-    } as Partial<Request>
+    }
 
     //fake response
-    const fakeResponse = {
+    response = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
-    } as Partial<Response>
+    }
 
     //ACT - Acao
 
-    await createUserController.execute(
-      fakeRequest as Request,
-      fakeResponse as Response,
-    )
+    await createUserController.execute(request as Request, response as Response)
 
     //Assert - Verificacao
-    expect(fakeResponse.status).toHaveBeenCalledWith(201)
+    expect(response.status).toHaveBeenCalledWith(201)
   })
 
   it('should return status 400 if firstName is empty', async () => {
     //arrange
     const { createUserController } = makeSut()
-    const request = {
+    request = {
       body: {
         first_name: '',
         last_name: 'Doee',
         email: 'john.doe@example.com',
         password: 'Password123!',
       },
-    } as Partial<Request>
-    const response = {
+    }
+    response = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
-    } as Partial<Response>
+    }
     //act
     await createUserController.execute(request as Request, response as Response)
     //assert
@@ -73,18 +73,18 @@ describe('CreateUserController', () => {
     //arrange
     const { createUserController, fakerService } = makeSut()
     fakerService.execute.mockRejectedValue(new Error('Error'))
-    const request = {
+    request = {
       body: {
         first_name: 'John',
         last_name: 'Doee',
         email: 'john.doe@example.com',
         password: 'Password123!',
       },
-    } as Partial<Request>
-    const response = {
+    }
+    response = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
-    } as Partial<Response>
+    }
 
     //act
     await createUserController.execute(request as Request, response as Response)
@@ -98,18 +98,18 @@ describe('CreateUserController', () => {
     fakerService.execute.mockRejectedValue(
       new EmailAlreadyExists('Email already exists'),
     )
-    const request = {
+    request = {
       body: {
         first_name: 'John',
         last_name: 'Doee',
         email: 'john.doe@example.com',
         password: 'Password123!',
       },
-    } as Partial<Request>
-    const response = {
+    }
+    response = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
-    } as Partial<Response>
+    }
     //act
     await createUserController.execute(request as Request, response as Response)
     //assert
