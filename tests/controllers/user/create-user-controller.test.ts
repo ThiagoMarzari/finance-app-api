@@ -4,22 +4,23 @@ import { CreateUserService } from '../../../src/services'
 import { EmailAlreadyExists } from '../../../src/errors/user'
 
 describe('CreateUserController', () => {
+  const makeSut = () => {
+    const service = {
+      execute: jest.fn(),
+    }
+    const sut = new CreateUserController(
+      service as unknown as CreateUserService,
+    )
+
+    return {
+      fakerService: service,
+      createUserController: sut,
+    }
+  }
+
   it('should return status 201 when user is created', async () => {
     //arrange - Preparacao
-    const fakeService = {
-      execute: jest.fn().mockResolvedValue({
-        id: 1,
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john.doe@example.com',
-        password: 'Password123!',
-      }),
-    }
-
-    //Controller real
-    const createUserController = new CreateUserController(
-      fakeService as unknown as CreateUserService,
-    )
+    const { createUserController } = makeSut()
 
     //fake request
     const fakeRequest = {
@@ -50,12 +51,7 @@ describe('CreateUserController', () => {
 
   it('should return status 400 if firstName is empty', async () => {
     //arrange
-    const fakerService = {
-      execute: jest.fn(),
-    }
-    const createUserController = new CreateUserController(
-      fakerService as unknown as CreateUserService,
-    )
+    const { createUserController } = makeSut()
     const request = {
       body: {
         first_name: '',
@@ -75,12 +71,8 @@ describe('CreateUserController', () => {
   })
   it('should return 500 if CreateUserService throws', async () => {
     //arrange
-    const fakerService = {
-      execute: jest.fn().mockRejectedValue(new Error('Error')),
-    }
-    const createUserController = new CreateUserController(
-      fakerService as unknown as CreateUserService,
-    )
+    const { createUserController, fakerService } = makeSut()
+    fakerService.execute.mockRejectedValue(new Error('Error'))
     const request = {
       body: {
         first_name: 'John',
@@ -102,13 +94,9 @@ describe('CreateUserController', () => {
 
   it('should return 500 if CreateUserService throws EmailIsAlreadyInUse Error', async () => {
     //arrange
-    const fakerService = {
-      execute: jest
-        .fn()
-        .mockRejectedValue(new EmailAlreadyExists('Email already exists')),
-    }
-    const createUserController = new CreateUserController(
-      fakerService as unknown as CreateUserService,
+    const { createUserController, fakerService } = makeSut()
+    fakerService.execute.mockRejectedValue(
+      new EmailAlreadyExists('Email already exists'),
     )
     const request = {
       body: {
