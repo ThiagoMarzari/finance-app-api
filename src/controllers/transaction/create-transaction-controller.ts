@@ -1,6 +1,11 @@
 import { Request, Response } from 'express'
 import { UserNotFound } from '../../errors/user.ts'
-import { badRequest, created, internalServerError } from '../helpers/index.ts'
+import {
+  badRequest,
+  created,
+  internalServerError,
+  notFound,
+} from '../helpers/index.ts'
 import { CreateTransactionService } from '../../services/transactions/create-transaction-service.ts'
 import {
   createTransactionSchema,
@@ -30,7 +35,7 @@ export class CreateTransactionController {
         return badRequest(res, error.issues[0].message)
       }
       if (error instanceof UserNotFound) {
-        return badRequest(res, error.message)
+        return notFound(res, error.message)
       }
       console.log('CreateTransactionController - ' + error)
       return internalServerError(res)
