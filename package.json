@@ -5,8 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watch --passWithNoTests",
+    "test": "jest --passWithNoTests --silent",
+    "test:watch": "jest --watch --passWithNoTests --silent",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "postinstall": "npx husky",
