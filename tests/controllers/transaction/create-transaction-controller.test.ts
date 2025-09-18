@@ -66,4 +66,19 @@ describe('CreateTransactionController', () => {
     )
     expect(response.status).toHaveBeenCalledWith(400)
   })
+
+  it('should call CreateTransactionService with correct values', async () => {
+    await createTransactionController.execute(
+      request as Request,
+      response as Response,
+    )
+
+    expect(fakeService.execute).toHaveBeenCalledWith({
+      userId: '78b1cbd6-5154-4af3-b2fa-1be9a8bbdd1e',
+      name: 'Transaction 1',
+      date: new Date('2021-01-01').toISOString(),
+      amount: 100,
+      type: 'EARNING',
+    })
+  })
 })
