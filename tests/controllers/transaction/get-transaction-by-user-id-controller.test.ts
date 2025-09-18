@@ -81,4 +81,15 @@ describe('GetTransactionByUserIdController', () => {
     )
     expect(response.status).toHaveBeenCalledWith(500)
   })
+
+  it('should call GetTransactionByUserIdService with correct value', async () => {
+    fakeService.execute.mockResolvedValue([mock])
+    await getTransactionByUserIdController.execute(
+      request as Request,
+      response as Response,
+    )
+    expect(fakeService.execute).toHaveBeenCalledWith({
+      userId: '78b1cbd6-5154-4af3-b2fa-1be9a8bbdd1e',
+    })
+  })
 })
