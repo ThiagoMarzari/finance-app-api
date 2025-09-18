@@ -1,9 +1,13 @@
 import { Request, Response } from 'express'
 import { UserNotFound } from '../../errors/user.ts'
 import { badRequest, internalServerError, ok } from '../helpers/index.ts'
-import { isUUID, isValidCurrency } from '../helpers/index.ts'
+import { isUUID } from '../helpers/index.ts'
 import { UpdateTransactionService } from '../../services/transactions/update-transaction-service.ts'
-import { checkIfTransactionTypeIsValid } from '../helpers/transaction-helper.ts'
+import {
+  TransactionTypeEnum,
+  updateTransactionSchema,
+} from '../../schemas/transaction.ts'
+import { ZodError } from 'zod'
 
 export class UpdateTransactionController {
   constructor(private updateTransactionService: UpdateTransactionService) {
@@ -12,42 +16,37 @@ export class UpdateTransactionController {
 
   async execute(req: Request, res: Response) {
     try {
-      const { name, date, amount, type } = req.body
-      const { id } = req.params
+      // Se body está vazio, retorna 400
+      if (!req.body || Object.keys(req.body).length === 0) {
+        return badRequest(res, 'At least one field must be provided to update')
+      }
 
+      const { id } = req.params
       if (!isUUID(id)) {
         return badRequest(res, 'Transaction ID is invalid')
       }
 
-      if (!name && !date && !amount && !type) {
-        return badRequest(res, 'No data to update')
-      }
+      // Faz o parse e validação
+      const { name, date, amount, type } = updateTransactionSchema.parse(
+        req.body,
+      )
 
-      if (type && !checkIfTransactionTypeIsValid(type)) {
-        return badRequest(
-          res,
-          'Invalid transaction type. Must be EARNING, EXPENSE, or INVESTMENT',
-        )
-      }
-
-      if (amount !== undefined && !isValidCurrency(amount)) {
-        return badRequest(res, 'Invalid amount format')
-      }
-
-      const typeUpperCase = type ? type.toUpperCase() : undefined
-
+      // Passa a data como string original (igual ao mock/teste)
       const updatedTransaction = await this.updateTransactionService.execute(
         id,
         {
           name,
-          date,
+          date: date ? req.body.date : undefined,
           amount,
-          type: typeUpperCase,
+          type: type as TransactionTypeEnum,
         },
       )
 
       return ok(res, updatedTransaction)
     } catch (error) {
+      if (error instanceof ZodError) {
+        return badRequest(res, error.issues[0].message)
+      }
       if (error instanceof UserNotFound) {
         return badRequest(res, error.message)
       }
