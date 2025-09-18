@@ -118,4 +118,21 @@ describe('UpdateTransactionController', () => {
 
     expect(response.status).toHaveBeenCalledWith(500)
   })
+
+  it('should call UpdateTransactionService with correct values', async () => {
+    await updateTransactionController.execute(
+      request as Request,
+      response as Response,
+    )
+
+    expect(fakeService.execute).toHaveBeenCalledWith(
+      '78b1cbd6-5154-4af3-b2fa-1be9a8bbdd1e',
+      {
+        name: 'Updated Transaction',
+        date: '2021-01-02',
+        amount: 200,
+        type: 'EXPENSE',
+      },
+    )
+  })
 })
