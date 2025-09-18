@@ -79,4 +79,17 @@ describe('DeleteTransactionController', () => {
 
     expect(response.status).toHaveBeenCalledWith(500)
   })
+
+  it('should call DeleteTransactionService with correct value', async () => {
+    fakeService.execute.mockResolvedValue(mockDeletedTransaction)
+
+    await deleteTransactionController.execute(
+      request as Request,
+      response as Response,
+    )
+
+    expect(fakeService.execute).toHaveBeenCalledWith(
+      '78b1cbd6-5154-4af3-b2fa-1be9a8bbdd1e',
+    )
+  })
 })
