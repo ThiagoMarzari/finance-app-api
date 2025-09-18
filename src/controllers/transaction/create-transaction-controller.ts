@@ -21,10 +21,11 @@ export class CreateTransactionController {
     try {
       const { user_id, name, date, amount, type } =
         createTransactionSchema.parse(req.body)
+
       const createdTransaction = await this.createTransactionService.execute({
         userId: user_id,
         name,
-        date: date.toISOString(),
+        date: date?.toISOString(),
         amount,
         type: type as TransactionTypeEnum,
       })

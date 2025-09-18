@@ -27,3 +27,9 @@ export const createTransactionSchema = z.object({
 
 // Export the transaction type enum for use in other files
 export type TransactionTypeEnum = z.infer<typeof TransactionType>
+
+// Schema for updating a transaction; all fields optional except user_id
+export const updateTransactionSchema = createTransactionSchema
+  .omit({ user_id: true })
+  .partial()
+  .strict()
