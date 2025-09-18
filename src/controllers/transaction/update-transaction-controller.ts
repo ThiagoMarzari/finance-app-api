@@ -1,6 +1,11 @@
 import { Request, Response } from 'express'
 import { UserNotFound } from '../../errors/user.ts'
-import { badRequest, internalServerError, ok } from '../helpers/index.ts'
+import {
+  badRequest,
+  internalServerError,
+  notFound,
+  ok,
+} from '../helpers/index.ts'
 import { isUUID } from '../helpers/index.ts'
 import { UpdateTransactionService } from '../../services/transactions/update-transaction-service.ts'
 import {
@@ -48,7 +53,7 @@ export class UpdateTransactionController {
         return badRequest(res, error.issues[0].message)
       }
       if (error instanceof UserNotFound) {
-        return badRequest(res, error.message)
+        return notFound(res, error.message)
       }
       console.log('UpdateTransactionController - ' + error)
       return internalServerError(res)

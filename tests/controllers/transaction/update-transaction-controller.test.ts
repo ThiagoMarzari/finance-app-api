@@ -97,7 +97,7 @@ describe('UpdateTransactionController', () => {
     expect(response.status).toHaveBeenCalledWith(400)
   })
 
-  it('should return status 400 when user not found', async () => {
+  it('should return status 404 when user not found', async () => {
     fakeService.execute.mockRejectedValueOnce(new UserNotFound())
 
     await updateTransactionController.execute(
@@ -105,7 +105,7 @@ describe('UpdateTransactionController', () => {
       response as Response,
     )
 
-    expect(response.status).toHaveBeenCalledWith(400)
+    expect(response.status).toHaveBeenCalledWith(404)
   })
 
   it('should return status 500 if occurs internal server error', async () => {
