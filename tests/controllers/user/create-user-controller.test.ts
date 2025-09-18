@@ -71,4 +71,15 @@ describe('CreateUserController', () => {
     await createUserController.execute(request as Request, response as Response)
     expect(response.status).toHaveBeenCalledWith(400)
   })
+
+  it('should call CreateUserService with correct values', async () => {
+    await createUserController.execute(request as Request, response as Response)
+
+    expect(fakeService.execute).toHaveBeenCalledWith({
+      firstName: 'John',
+      lastName: 'Doee',
+      email: 'john.doe@example.com',
+      password: 'Password123!',
+    })
+  })
 })
