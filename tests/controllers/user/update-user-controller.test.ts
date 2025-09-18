@@ -310,4 +310,17 @@ describe('UpdateUserController', () => {
       expect(response.status).toHaveBeenCalledWith(200)
     })
   })
+
+  it('should call UpdateUserService with correct value', async () => {
+    await updateUserController.execute(request as Request, response as Response)
+    expect(fakeService.execute).toHaveBeenCalledWith(
+      '78b1cbd6-5154-4af3-b2fa-1be9a8bbdd1e',
+      {
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'john.doe@example.com',
+        password: 'Password123!@',
+      },
+    )
+  })
 })

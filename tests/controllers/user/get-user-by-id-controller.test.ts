@@ -174,4 +174,14 @@ describe('GetUserByIdController', () => {
     //assert
     expect(response.status).toHaveBeenCalledWith(400)
   })
+
+  it('should called GetUserByIdService with correct value', async () => {
+    await getUserByIdController.execute(
+      request as Request,
+      response as Response,
+    )
+    expect(fakeService.execute).toHaveBeenCalledWith(
+      '78b1cbd6-5154-4af3-b2fa-1be9a8bbdd1e',
+    )
+  })
 })
