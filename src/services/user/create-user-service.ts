@@ -14,12 +14,15 @@ interface createUserProps {
 }
 
 export class CreateUserService {
-  constructor(private createUserRepository: CreateUserRepository) {
+  constructor(
+    private createUserRepository: CreateUserRepository,
+    private getUserByEmailRepository: GetUserByEmailRepository,
+  ) {
     this.createUserRepository = createUserRepository
+    this.getUserByEmailRepository = getUserByEmailRepository
   }
   async execute({ firstName, lastName, email, password }: createUserProps) {
-    const getUserByEmailRepository = new GetUserByEmailRepository()
-    const existsUserEmail = await getUserByEmailRepository.execute(email)
+    const existsUserEmail = await this.getUserByEmailRepository.execute(email)
 
     if (existsUserEmail) {
       throw new EmailAlreadyExists(email)
