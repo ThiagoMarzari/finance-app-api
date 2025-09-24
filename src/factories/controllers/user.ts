@@ -1,3 +1,4 @@
+import { PasswordHasherAdapter } from '../../adapters/password-hasher-adapter.ts'
 import {
   CreateUserController,
   DeleteUserController,
@@ -31,21 +32,21 @@ export const makeGetUserByIdController = () => {
 }
 
 export const makeCreateUserController = () => {
-  const createUserRepository = new CreateUserRepository()
-  const createUserService = new CreateUserService(createUserRepository)
+  const createUserService = new CreateUserService(
+    new CreateUserRepository(),
+    new GetUserByEmailRepository(),
+    new PasswordHasherAdapter(),
+  )
   const createUserController = new CreateUserController(createUserService)
 
   return createUserController
 }
 
 export const makeUpdateUserController = () => {
-  const updateUserRepository = new UpdateUserRepository()
-  const getUserByEmailRepository = new GetUserByEmailRepository()
-  const getUserByIdRepository = new GetUserByIdRepository()
   const updateUserService = new UpdateUserService(
-    updateUserRepository,
-    getUserByEmailRepository,
-    getUserByIdRepository,
+    new UpdateUserRepository(),
+    new GetUserByEmailRepository(),
+    new GetUserByIdRepository(),
   )
   const updateUserController = new UpdateUserController(updateUserService)
 
@@ -60,11 +61,9 @@ export const makeDeleteUserController = () => {
 }
 
 export const makeGetUserBalanceController = () => {
-  const getUserBalanceRepository = new GetUserBalanceRepository()
-  const getUserByIdRepository = new GetUserByIdRepository()
   const getUserBalanceService = new GetUserBalanceService(
-    getUserBalanceRepository,
-    getUserByIdRepository,
+    new GetUserBalanceRepository(),
+    new GetUserByIdRepository(),
   )
   const getUserBalanceController = new GetUserBalanceController(
     getUserBalanceService,

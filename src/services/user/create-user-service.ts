@@ -1,10 +1,10 @@
 import crypto from 'crypto'
-import bcrypt from 'bcryptjs'
 import {
   CreateUserRepository,
   GetUserByEmailRepository,
 } from '../../repositories/index.ts'
 import { EmailAlreadyExists } from '../../errors/user.ts'
+import { PasswordHasherAdapter } from '../../adapters/password-hasher-adapter.ts'
 
 interface createUserProps {
   firstName: string
@@ -17,10 +17,13 @@ export class CreateUserService {
   constructor(
     private createUserRepository: CreateUserRepository,
     private getUserByEmailRepository: GetUserByEmailRepository,
+    private passwordHasherAdapter: PasswordHasherAdapter,
   ) {
     this.createUserRepository = createUserRepository
     this.getUserByEmailRepository = getUserByEmailRepository
+    this.passwordHasherAdapter = passwordHasherAdapter
   }
+
   async execute({ firstName, lastName, email, password }: createUserProps) {
     const existsUserEmail = await this.getUserByEmailRepository.execute(email)
 
@@ -30,7 +33,7 @@ export class CreateUserService {
 
     const userId = crypto.randomUUID()
     //Criptografar a senha
-    const passwordHashed = await bcrypt.hash(password, 10)
+    const passwordHashed = await this.passwordHasherAdapter.execute(password)
     const user: createUserProps & { id: string } = {
       id: userId,
       password: passwordHashed,
