@@ -1,10 +1,12 @@
-import crypto from 'crypto'
 import {
   CreateUserRepository,
   GetUserByEmailRepository,
 } from '../../repositories/index.ts'
 import { EmailAlreadyExists } from '../../errors/user.ts'
-import { PasswordHasherAdapter } from '../../adapters/password-hasher-adapter.ts'
+import {
+  PasswordHasherAdapter,
+  UuidGeneratorAdapter,
+} from '../../adapters/index.ts'
 
 interface createUserProps {
   firstName: string
@@ -18,10 +20,12 @@ export class CreateUserService {
     private createUserRepository: CreateUserRepository,
     private getUserByEmailRepository: GetUserByEmailRepository,
     private passwordHasherAdapter: PasswordHasherAdapter,
+    private uuidGeneratorAdapter: UuidGeneratorAdapter,
   ) {
     this.createUserRepository = createUserRepository
     this.getUserByEmailRepository = getUserByEmailRepository
     this.passwordHasherAdapter = passwordHasherAdapter
+    this.uuidGeneratorAdapter = uuidGeneratorAdapter
   }
 
   async execute({ firstName, lastName, email, password }: createUserProps) {
@@ -31,7 +35,7 @@ export class CreateUserService {
       throw new EmailAlreadyExists(email)
     }
 
-    const userId = crypto.randomUUID()
+    const userId = this.uuidGeneratorAdapter.execute()
     //Criptografar a senha
     const passwordHashed = await this.passwordHasherAdapter.execute(password)
     const user: createUserProps & { id: string } = {

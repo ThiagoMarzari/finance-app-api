@@ -1,4 +1,7 @@
-import { PasswordHasherAdapter } from '../../adapters/password-hasher-adapter.ts'
+import {
+  PasswordHasherAdapter,
+  UuidGeneratorAdapter,
+} from '../../adapters/index.ts'
 import {
   CreateUserController,
   DeleteUserController,
@@ -36,6 +39,7 @@ export const makeCreateUserController = () => {
     new CreateUserRepository(),
     new GetUserByEmailRepository(),
     new PasswordHasherAdapter(),
+    new UuidGeneratorAdapter(),
   )
   const createUserController = new CreateUserController(createUserService)
 
