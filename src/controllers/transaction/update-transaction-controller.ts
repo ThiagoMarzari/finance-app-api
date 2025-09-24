@@ -36,7 +36,6 @@ export class UpdateTransactionController {
         req.body,
       )
 
-      // Passa a data como string original (igual ao mock/teste)
       const updatedTransaction = await this.updateTransactionService.execute(
         id,
         {

@@ -9,3 +9,4 @@ dist
 .idea
 src/db/prisma/generated/
 /src/generated/prisma
+coverage

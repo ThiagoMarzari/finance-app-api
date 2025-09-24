@@ -119,6 +119,21 @@ describe('UpdateTransactionController', () => {
     expect(response.status).toHaveBeenCalledWith(500)
   })
 
+  it('should log error on internal server error', async () => {
+    const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
+    fakeService.execute.mockRejectedValueOnce(new Error('any_error'))
+
+    await updateTransactionController.execute(
+      request as Request,
+      response as Response,
+    )
+
+    expect(logSpy).toHaveBeenCalledWith(
+      expect.stringContaining('UpdateTransactionController - '),
+    )
+    logSpy.mockRestore()
+  })
+
   it('should call UpdateTransactionService with correct values', async () => {
     await updateTransactionController.execute(
       request as Request,
