@@ -51,9 +51,10 @@ export const makeUpdateUserController = () => {
     new UpdateUserRepository(),
     new GetUserByEmailRepository(),
     new GetUserByIdRepository(),
+    new PasswordHasherAdapter(),
   )
-  const updateUserController = new UpdateUserController(updateUserService)
 
+  const updateUserController = new UpdateUserController(updateUserService)
   return updateUserController
 }
 export const makeDeleteUserController = () => {

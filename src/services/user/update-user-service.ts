@@ -1,10 +1,10 @@
-import bcrypt from 'bcryptjs'
 import { EmailAlreadyExists, UserNotFound } from '../../errors/user.ts'
 import {
   GetUserByEmailRepository,
   GetUserByIdRepository,
   UpdateUserRepository,
 } from '../../repositories/index.ts'
+import { PasswordHasherAdapter } from '../../adapters/index.ts'
 
 interface updateUserProps {
   firstName?: string
@@ -18,10 +18,12 @@ export class UpdateUserService {
     private updateUserRepository: UpdateUserRepository,
     private getUserByEmailRepository: GetUserByEmailRepository,
     private getUserByIdRepository: GetUserByIdRepository,
+    private passwordHasherAdapter: PasswordHasherAdapter,
   ) {
     this.updateUserRepository = updateUserRepository
     this.getUserByEmailRepository = getUserByEmailRepository
     this.getUserByIdRepository = getUserByIdRepository
+    this.passwordHasherAdapter = passwordHasherAdapter
   }
   async execute(userId: string, updateUser: updateUserProps) {
     if (updateUser.email) {
@@ -43,7 +45,9 @@ export class UpdateUserService {
     }
 
     if (updateUser.password) {
-      const hashedPassword = await bcrypt.hash(updateUser.password, 10)
+      const hashedPassword = await this.passwordHasherAdapter.execute(
+        updateUser.password,
+      )
 
       user.password = hashedPassword
     }
