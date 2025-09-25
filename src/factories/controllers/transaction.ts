@@ -1,3 +1,4 @@
+import { UuidGeneratorAdapter } from '../../adapters/uuid-generator-adapter.ts'
 import {
   CreateTransactionController,
   DeleteTransactionController,
@@ -22,9 +23,11 @@ import {
 export const makeCreateTransactionController = () => {
   const createTransactionRepository = new CreateTransactionRepository()
   const getUserByIdRepository = new GetUserByIdRepository()
+  const uuidGeneratorAdapter = new UuidGeneratorAdapter()
   const createTransactionService = new CreateTransactionService(
     createTransactionRepository,
     getUserByIdRepository,
+    uuidGeneratorAdapter,
   )
   const createTransactionController = new CreateTransactionController(
     createTransactionService,

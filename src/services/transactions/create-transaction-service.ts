@@ -1,3 +1,4 @@
+import { UuidGeneratorAdapter } from '../../adapters/index.ts'
 import { UserNotFound } from '../../errors/user.ts'
 import {
   CreateTransactionRepository,
@@ -17,9 +18,11 @@ export class CreateTransactionService {
   constructor(
     private createTransactionRepository: CreateTransactionRepository,
     private getUserByIdRepository: GetUserByIdRepository,
+    private uuidGeneratorAdapter: UuidGeneratorAdapter,
   ) {
     this.createTransactionRepository = createTransactionRepository
     this.getUserByIdRepository = getUserByIdRepository
+    this.uuidGeneratorAdapter = uuidGeneratorAdapter
   }
 
   async execute({ userId, name, date, amount, type }: CreateTransactionParams) {
@@ -28,7 +31,7 @@ export class CreateTransactionService {
       throw new UserNotFound(userId)
     }
 
-    const transactionID = crypto.randomUUID()
+    const transactionID = this.uuidGeneratorAdapter.execute()
 
     const transaction = await this.createTransactionRepository.execute({
       id: transactionID,
