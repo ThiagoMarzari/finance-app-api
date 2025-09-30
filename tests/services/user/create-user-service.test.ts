@@ -1,13 +1,13 @@
-import { CreateUserService } from '../../src/services/user/create-user-service'
+import { CreateUserService } from '../../../src/services/user/create-user-service'
 import {
   CreateUserRepository,
   GetUserByEmailRepository,
-} from '../../src/repositories/index'
+} from '../../../src/repositories/index'
 import {
   PasswordHasherAdapter,
   UuidGeneratorAdapter,
-} from '../../src/adapters/index'
-import { EmailAlreadyExists } from '../../src/errors/user'
+} from '../../../src/adapters/index'
+import { EmailAlreadyExists } from '../../../src/errors/user'
 
 describe('CreateUserService', () => {
   let createUserService: CreateUserService
